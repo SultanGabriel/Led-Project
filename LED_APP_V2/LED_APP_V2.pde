@@ -53,8 +53,9 @@ void setup() {
 
 color c;
 color sliderColor;
+
 void draw() {
-RGB();
+	RGB();
 	background(bgColor);
 	image(icon, 0, 0);
 
