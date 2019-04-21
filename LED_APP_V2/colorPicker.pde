@@ -23,18 +23,15 @@ class Picker {
 		currentHue = hue(currentColor);
 
 		angle = degrees(atan(mY/mX));
-		println(angle);
 
 		sendToArd(currentColor);
 	}
 
 	void update(){
-		println(currentHue);
-		currentHue = currentHue % 360;
-		currentHue = abs(currentHue);
-		currentColor = color(currentHue, 100, 100);
+		//currentHue = currentHue % 360;
+		//currentHue = abs(currentHue);
+		//currentColor = color(currentHue, 100, 100);
 		sendToArd(currentColor);
-
 	}
 
 	void drawPicker(){

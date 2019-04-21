@@ -334,18 +334,15 @@ class Picker {
 		currentHue = hue(currentColor);
 
 		angle = degrees(atan(mY/mX));
-		println(angle);
 
 		sendToArd(currentColor);
 	}
 
 	public void update(){
-		println(currentHue);
-		currentHue = currentHue % 360;
-		currentHue = abs(currentHue);
-		currentColor = color(currentHue, 100, 100);
+		//currentHue = currentHue % 360;
+		//currentHue = abs(currentHue);
+		//currentColor = color(currentHue, 100, 100);
 		sendToArd(currentColor);
-
 	}
 
 	public void drawPicker(){
@@ -507,9 +504,9 @@ public void mouseReleased() {
 
 public void mouseWheel(MouseEvent event) {
   float e = event.getCount();
-  println(e);
-  picker.currentHue += e;
-  picker.update();
+//1  println(e);
+//  picker.currentHue += e;
+//  picker.update();
 }
 public int musicColorSynced(float br){
 	int count = 0;

@@ -60,7 +60,7 @@ void mouseReleased() {
 
 void mouseWheel(MouseEvent event) {
   float e = event.getCount();
-  println(e);
-  picker.currentHue += e;
-  picker.update();
+//1  println(e);
+//  picker.currentHue += e;
+//  picker.update();
 }
