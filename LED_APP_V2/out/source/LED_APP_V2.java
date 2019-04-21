@@ -18,7 +18,7 @@ import java.io.IOException;
 
 public class LED_APP_V2 extends PApplet {
 
-Checkbox cbSynced, cbRandom, cbColorSync, cbFade;
+Checkbox cbSynced, cbRandom, cbColorSync, cbFade, cbFadeToRandom;
 Slider sliders[] = new Slider[6];
 Picker picker;
 
@@ -66,15 +66,17 @@ public void setup() {
 	cbColorSync = new Checkbox(75, 50, "Hue", cbSynced);
 
 	cbFade = new Checkbox(225, 20, "Fade");
-
+	cbFadeToRandom = new Checkbox(225, 40, "Fade to Random");	
+	
 	picker = new Picker(200, 175, 200);
 
 }
 
 int c;
 int sliderColor;
+
 public void draw() {
-RGB();
+	RGB();
 	background(bgColor);
 	image(icon, 0, 0);
 
@@ -82,7 +84,8 @@ RGB();
 	cbRandom.update();
 	cbColorSync.update();
 	cbFade.update();
-
+	cbFadeToRandom.update();
+	
 	randomSync = cbRandom.checked;
 	musicSinced = cbSynced.checked;
 	colorSync = cbColorSync.checked;

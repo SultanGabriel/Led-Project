@@ -46,7 +46,7 @@ void setup() {
 	cbColorSync = new Checkbox(75, 50, "Hue", cbSynced);
 
 	cbFade = new Checkbox(225, 20, "Fade");
-	cbFadeToRandom = new Checkbox(225, 40, "Fade to Random");
+	cbFadeToRandom = new Checkbox(225, 40, "Fade to Random");	
 	
 	picker = new Picker(200, 175, 200);
 
@@ -64,7 +64,8 @@ void draw() {
 	cbRandom.update();
 	cbColorSync.update();
 	cbFade.update();
-
+	cbFadeToRandom.update();
+	
 	randomSync = cbRandom.checked;
 	musicSinced = cbSynced.checked;
 	colorSync = cbColorSync.checked;
