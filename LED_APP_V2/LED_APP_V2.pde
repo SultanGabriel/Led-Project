@@ -1,4 +1,4 @@
-Checkbox cbSynced, cbRandom, cbColorSync, cbFade;
+Checkbox cbSynced, cbRandom, cbColorSync, cbFade, cbFadeToRandom;
 Slider sliders[] = new Slider[6];
 Picker picker;
 
@@ -46,7 +46,8 @@ void setup() {
 	cbColorSync = new Checkbox(75, 50, "Hue", cbSynced);
 
 	cbFade = new Checkbox(225, 20, "Fade");
-
+	cbFadeToRandom = new Checkbox(225, 40, "Fade to Random");
+	
 	picker = new Picker(200, 175, 200);
 
 }
