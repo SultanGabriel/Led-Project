@@ -13,7 +13,8 @@ boolean debugMouse = false;
 color bgColor = color(200);
 //soundmultiplier
 int soundMultiplier = 20;
-
+//default Color ; the color the app starts with
+color defaultColor = color(255,0,0);
 /*
 
 int r = (c >> 16) & 0xFF;

@@ -1,4 +1,4 @@
-public class Checkbox {
+public class Checkbox {	//TODO this needs some touching up!!
 int x, y;
 int size = 10;
 int hSize = int(size / 2);

@@ -2,6 +2,14 @@ Checkbox cbSynced, cbRandom, cbColorSync, cbFade, cbFadeToRandom;
 Slider sliders[] = new Slider[6];
 Picker picker;
 
+//	TODO REDESIGN THE APP
+//	TODO settings and profiles tab
+//  TODO better background color
+//  TODO better icon / logo
+//  TODO ADD PROFILES
+//  TODO make the config a cfg or json // it doen't really matter
+//  TODO Be able to add custom modes
+
 void setup() {
 	size(400, 350);
 	setIcon();
@@ -9,6 +17,7 @@ void setup() {
 	getMixer();
 	player = minim.getLineIn();
 	connectToArd();
+
 	icon.resize(50, 50);
 
 // -- Initialization Classes -- //
@@ -32,7 +41,7 @@ void setup() {
 	sliders[4].id = "Fade Brightness";
 	sliders[4].dotColor = color(255);
 	//Brightness
-	sliders[5] = new Slider(50, 100, 300, 0, 100, 25);
+	sliders[5] = new Slider(50, 100, 300, 0, 100, 50);
 	sliders[5].id = "Brightness";
 	sliders[5].dotColor = color(255);
 	//Random
@@ -46,14 +55,14 @@ void setup() {
 	cbColorSync = new Checkbox(75, 50, "Hue", cbSynced);
 
 	cbFade = new Checkbox(225, 20, "Fade");
-	cbFadeToRandom = new Checkbox(225, 40, "Fade to Random");	
-	
-	picker = new Picker(200, 200, 200);
+	cbFadeToRandom = new Checkbox(225, 40, "Fade to Random");
 
+	picker = new Picker(200, 200, 200);
+	picker.currentColor = defaultColor;
 }
 
 color c;
-color sliderColor;
+color selectedColor;
 
 void draw() {
 	RGB();
@@ -65,58 +74,56 @@ void draw() {
 	cbColorSync.update();
 	cbFade.update();
 	cbFadeToRandom.update();
-	
+
 	randomSync = cbRandom.checked;
 	musicSinced = cbSynced.checked;
 	colorSync = cbColorSync.checked;
 	fade = cbFade.checked;
 
-	/*if(!fade && !colorSync) {
-	        for(int i = 0; i < 3; i++) {
-	                sliders[i].update();
-	        }
-	        sliders[5].update();
-	   } else if(colorSync) {
-	        sliders[5].update();
-	   } else if(fade) {
-	        sliders[3].update();
-	        sliders[4].update();
-	   }*/
+	if(!fade && !colorSync) {
+		picker.drawPicker();
+		//sliders[5].update();
+	} else if(colorSync) {
+		sliders[5].update();
+	} else if(fade) {
+		sliders[3].update();
+		sliders[4].update();
+	}
 
-	RGB();
-	sliderColor = color(sliders[0].value, sliders[1].value, sliders[2].value);
-	/*if (musicSinced && !colorSync && !randomSync) { //SYNC ONE COLOR
-	        c = musicOneColor(sliderColor);
-	        sendToArd(c);
+	//sliderColor = color(sliders[0].value, sliders[1].value, sliders[2].value);
+	selectedColor = picker.currentColor; //TODO REWRITE THE MDOE SELECTOR ( USE SWITCH )
+	
+	if (musicSinced && !colorSync && !randomSync) { //SYNC ONE COLOR
+		c = musicOneColor(selectedColor);
+		sendToArd(c);
 
-	   } else if (musicSinced && colorSync && !randomSync) { //COLOR SYNC
-	        float br = sliders[5].value;
-	        c = musicColorSynced(br);
-	        sendToArd(c);
+	} else if (musicSinced && colorSync && !randomSync) {    //COLOR SYNC
+		float br = sliders[5].value;
+		c = musicColorSynced(br);
+		sendToArd(c);
 
-	   } else if (musicSinced && !colorSync && randomSync) { //RANDOM SYNC
-	        c = musicRnd();
-	        sendToArd(c);
+	} else if (musicSinced && !colorSync && randomSync) {    //RANDOM SYNC
+		c = musicRnd();
+		sendToArd(c);
 
-	   } else if (fade) { //FADE
-	        float br = sliders[4].value;
-	        float speed = sliders[3].value;
-	        c = fade(speed, br);
-	        sendToArd(c);
+	} else if (fade) {    //FADE
+		float br = sliders[4].value;
+		float speed = sliders[3].value;
+		c = fade(speed, br);
+		sendToArd(c);
 
-	   } else {
-	        c = sliderColor;
-	        if (mousePressed) {
-	                sendToArd(c);
-	        }
-	   }*/
+	} else {
+		if(c != selectedColor){
+			sendToArd(selectedColor);
+		}
+		c = selectedColor;
+	}
 
 	//colorWheel(125);
 	//colorSquare();
 
 	//ellipse(200, 175, 250, 250);
-	picker.update();
-	picker.drawPicker();
+
 
 	if (debugMouse) {
 		text(mouseX + ", " + mouseY, mouseX + 5, mouseY - 5);
@@ -132,28 +139,3 @@ void HSB(){
 void RGB(){
 	colorMode(RGB, 255, 255, 255);
 }
-/*
-
-       /
-   /*
-        IMPORTANT
-    TODO rewrite the "picker"
-    TODO add a color circle or something similar
-
-    TODO rewrite the checkbox class
-
-    TODO ADD PROFILES
-    TODO make the config a cfg or json // it doen't really matter
-
-        NOT AS IMPORTANT
-
-    TODO settings tab
-    TODO redesign the sliders
-    TODO better background color
-    TODO better icon / logo
-    TODO Be able to add custom modes
-
-        NOT REALLY IMPORTANT
-
-    TODO
- */

@@ -28,10 +28,12 @@ color musicRnd() {
 		lowTot+= ( soundIn * soundMultiplier );
 		count++;
 	}
+	
 	colorMode(HSB, 360, 100, 100);
 	if(lowTot > 1000) {
 		clr = color(round(random(360)), 100, 100);
 	}
+
 	s = int(saturation(clr));
 	h = int(hue(clr));
 	br = floor(map(lowTot, 0, count * soundMultiplier, 0, 100));
@@ -72,4 +74,8 @@ color fade(float speed, float b) {
 
 	color c = color(h, 100, b);
 	return c;
+}
+
+color fadeToRandom(){ //TODO write this mode 
+	return color(134,3,431);
 }

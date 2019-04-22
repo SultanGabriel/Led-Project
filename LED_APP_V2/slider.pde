@@ -1,4 +1,4 @@
-class Slider {
+class Slider {	//TODO rewrite or rethink the Slider class!
 	float x;
 	float y;
 	float sWidth;

@@ -22,6 +22,14 @@ Checkbox cbSynced, cbRandom, cbColorSync, cbFade, cbFadeToRandom;
 Slider sliders[] = new Slider[6];
 Picker picker;
 
+//	TODO REDESIGN THE APP
+//	TODO settings and profiles tab
+//  TODO better background color
+//  TODO better icon / logo
+//  TODO ADD PROFILES
+//  TODO make the config a cfg or json // it doen't really matter
+//  TODO Be able to add custom modes
+
 public void setup() {
 	
 	setIcon();
@@ -29,6 +37,7 @@ public void setup() {
 	getMixer();
 	player = minim.getLineIn();
 	connectToArd();
+
 	icon.resize(50, 50);
 
 // -- Initialization Classes -- //
@@ -52,7 +61,7 @@ public void setup() {
 	sliders[4].id = "Fade Brightness";
 	sliders[4].dotColor = color(255);
 	//Brightness
-	sliders[5] = new Slider(50, 100, 300, 0, 100, 25);
+	sliders[5] = new Slider(50, 100, 300, 0, 100, 50);
 	sliders[5].id = "Brightness";
 	sliders[5].dotColor = color(255);
 	//Random
@@ -66,14 +75,14 @@ public void setup() {
 	cbColorSync = new Checkbox(75, 50, "Hue", cbSynced);
 
 	cbFade = new Checkbox(225, 20, "Fade");
-	cbFadeToRandom = new Checkbox(225, 40, "Fade to Random");	
-	
-	picker = new Picker(200, 200, 200);
+	cbFadeToRandom = new Checkbox(225, 40, "Fade to Random");
 
+	picker = new Picker(200, 200, 200);
+	picker.currentColor = defaultColor;
 }
 
 int c;
-int sliderColor;
+int selectedColor;
 
 public void draw() {
 	RGB();
@@ -85,58 +94,56 @@ public void draw() {
 	cbColorSync.update();
 	cbFade.update();
 	cbFadeToRandom.update();
-	
+
 	randomSync = cbRandom.checked;
 	musicSinced = cbSynced.checked;
 	colorSync = cbColorSync.checked;
 	fade = cbFade.checked;
 
-	/*if(!fade && !colorSync) {
-	        for(int i = 0; i < 3; i++) {
-	                sliders[i].update();
-	        }
-	        sliders[5].update();
-	   } else if(colorSync) {
-	        sliders[5].update();
-	   } else if(fade) {
-	        sliders[3].update();
-	        sliders[4].update();
-	   }*/
+	if(!fade && !colorSync) {
+		picker.drawPicker();
+		//sliders[5].update();
+	} else if(colorSync) {
+		sliders[5].update();
+	} else if(fade) {
+		sliders[3].update();
+		sliders[4].update();
+	}
 
-	RGB();
-	sliderColor = color(sliders[0].value, sliders[1].value, sliders[2].value);
-	/*if (musicSinced && !colorSync && !randomSync) { //SYNC ONE COLOR
-	        c = musicOneColor(sliderColor);
-	        sendToArd(c);
+	//sliderColor = color(sliders[0].value, sliders[1].value, sliders[2].value);
+	selectedColor = picker.currentColor; //TODO REWRITE THE MDOE SELECTOR ( USE SWITCH )
+	
+	if (musicSinced && !colorSync && !randomSync) { //SYNC ONE COLOR
+		c = musicOneColor(selectedColor);
+		sendToArd(c);
 
-	   } else if (musicSinced && colorSync && !randomSync) { //COLOR SYNC
-	        float br = sliders[5].value;
-	        c = musicColorSynced(br);
-	        sendToArd(c);
+	} else if (musicSinced && colorSync && !randomSync) {    //COLOR SYNC
+		float br = sliders[5].value;
+		c = musicColorSynced(br);
+		sendToArd(c);
 
-	   } else if (musicSinced && !colorSync && randomSync) { //RANDOM SYNC
-	        c = musicRnd();
-	        sendToArd(c);
+	} else if (musicSinced && !colorSync && randomSync) {    //RANDOM SYNC
+		c = musicRnd();
+		sendToArd(c);
 
-	   } else if (fade) { //FADE
-	        float br = sliders[4].value;
-	        float speed = sliders[3].value;
-	        c = fade(speed, br);
-	        sendToArd(c);
+	} else if (fade) {    //FADE
+		float br = sliders[4].value;
+		float speed = sliders[3].value;
+		c = fade(speed, br);
+		sendToArd(c);
 
-	   } else {
-	        c = sliderColor;
-	        if (mousePressed) {
-	                sendToArd(c);
-	        }
-	   }*/
+	} else {
+		if(c != selectedColor){
+			sendToArd(selectedColor);
+		}
+		c = selectedColor;
+	}
 
 	//colorWheel(125);
 	//colorSquare();
 
 	//ellipse(200, 175, 250, 250);
-	picker.update();
-	picker.drawPicker();
+
 
 	if (debugMouse) {
 		text(mouseX + ", " + mouseY, mouseX + 5, mouseY - 5);
@@ -152,32 +159,7 @@ public void HSB(){
 public void RGB(){
 	colorMode(RGB, 255, 255, 255);
 }
-/*
-
-       /
-   /*
-        IMPORTANT
-    TODO rewrite the "picker"
-    TODO add a color circle or something similar
-
-    TODO rewrite the checkbox class
-
-    TODO ADD PROFILES
-    TODO make the config a cfg or json // it doen't really matter
-
-        NOT AS IMPORTANT
-
-    TODO settings tab
-    TODO redesign the sliders
-    TODO better background color
-    TODO better icon / logo
-    TODO Be able to add custom modes
-
-        NOT REALLY IMPORTANT
-
-    TODO
- */
-public class Checkbox {
+public class Checkbox {	//TODO this needs some touching up!!
 int x, y;
 int size = 10;
 int hSize = PApplet.parseInt(size / 2);
@@ -257,66 +239,11 @@ public void update() {
 	this.show();
 }
 }
-//  <<<--->>> <<<--->>> <<<--->>> <<<--->>>
-int segs = 12;
-int steps = 16;
-float rotAdjust = TWO_PI / segs / 2;
-float radius;
-float segWidth;
-float interval = TWO_PI / segs;
-
-int sizeX; 
-int sizeY;
-
-public void shadeWheelSETUP(int sizeX_, int sizeY_) {
-  sizeX = sizeX_;
-  sizeY = sizeY_;
-  smooth();
-  ellipseMode(RADIUS);
-
-  radius = min(sizeX, sizeY) * 0.45f;
-  segWidth = radius / steps;
-}
-
-public void drawShadeWheel() {
-  //background(255);
-
-  for (int j = 0; j < steps; j++) {
-    int[] cols = {
-      color(255-(255/steps)*j, 255-(255/steps)*j, 0), 
-      color(255-(255/steps)*j, (255/1.5f)-((255/1.5f)/steps)*j, 0), 
-      color(255-(255/steps)*j, (255/2)-((255/2)/steps)*j, 0), 
-      color(255-(255/steps)*j, (255/2.5f)-((255/2.5f)/steps)*j, 0), 
-
-      color(255-(255/steps)*j, 0, 0), // red
-      color(255-(255/steps)*j, 0, (255/2)-((255/2)/steps)*j), 
-      color(255-(255/steps)*j, 0, 255-(255/steps)*j), 
-      color((255/2)-((255/2)/steps)*j, 0, 255-(255/steps)*j), 
-
-      color(0, 0, 255-(255/steps)*j), //blue
-      color(0, 255-(255/steps)*j, (255/2.5f)-((255/2.5f)/steps)*j), 
-
-      color(0, 255-(255/steps)*j, 0), //green
-      color((255/2)-((255/2)/steps)*j, 255-(255/steps)*j, 0)
-    };
-    noStroke();
-    for (int i = 0; i < segs; i++) {
-      /*fill(255);
-       ellipse(sizeX/2, sizeY/2, radius + segWidth, radius + segWidth);*/
-      fill(cols[i]);
-      arc(sizeX/2 + 25, height - sizeY/2 - 25, radius, radius, 
-        interval*i+rotAdjust, interval*(i+1)+rotAdjust);
-      /*fill(0);
-       ellipse(sizeX/2, sizeY/2, segWidth, segWidth);*/
-    }
-    radius -= segWidth;
-  }
-}
 class Picker {
 	float x;
 	float y;
 	float radius;
-	float width = 15;
+	float w = 15; // width
 	float increment = PI / 180;
 	float currentHue = -75;
 	int currentColor;
@@ -330,27 +257,22 @@ class Picker {
 	}
 
 	public void select(int mX, int mY){
-//		int mX = mouseX;
-//		int mY = mouseY;
-
 		currentColor = get(mX, mY);
 		currentHue = hue(currentColor);
 
 		angle = degrees(atan(mY/mX));
-
-		sendToArd(currentColor);
 	}
 
 	public void update(){
 		//currentHue = currentHue % 360;
 		//currentHue = abs(currentHue);
 		//currentColor = color(currentHue, 100, 100);
-		sendToArd(currentColor);
+		//sendToArd(currentColor);
 	}
-
-	public void drawPicker(){
+	float cx, cy;
+	public void drawPicker(){  //TODO get this working better
 		noFill();
-		strokeWeight(width);
+		strokeWeight(w);
 		HSB();
 
 		for(float i = 0; i < TWO_PI; i += increment) {
@@ -358,23 +280,19 @@ class Picker {
 			stroke(h, 100, 100);
 			arc(x, y, radius, radius, i, i + increment);
 		}
-
-		float cy = ( radius ) / 2 * sin(radians(currentHue)) + y;
-		float cx = ( radius ) / 2 * cos(radians(currentHue)) + x;
+		cx = round((radius) / 2 * cos(radians(currentHue)) + x);
+		cy = round((radius) / 2 * sin(radians(currentHue)) + y);
 
 		stroke(0);
 		strokeWeight(5);
-
 		line(x, y, cx, cy);
 
 		strokeWeight(2);
-
-		fill(currentHue, 100, 100);
-
+		fill(currentColor);
 		ellipse(x, y, 50, 50);
 		//triangle();
 
-		ellipse(cx, cy, 30, 30);
+		ellipse(cx, cy, w * 2, w * 2);
 
 		//rect(mouseX - 10, mouseY - 10, 20, 20, 25);
 	}
@@ -436,7 +354,8 @@ boolean debugMouse = false;
 int bgColor = color(200);
 //soundmultiplier
 int soundMultiplier = 20;
-
+//default Color ; the color the app starts with
+int defaultColor = color(255,0,0);
 /*
 
 int r = (c >> 16) & 0xFF;
@@ -496,9 +415,10 @@ public void mousePressed() {
 	}
 	float d = dist(picker.x, picker.y, mouseX, mouseY);
 
-	if(91 <  d && d < 109) // 90 - 110
+	if(91 <  d && d < 119) // 90 - 110
 		picker.select(mouseX, mouseY);
-	//sendToArd(get(mouseX, mouseY));
+	
+	//println("MX " + mouseX + " MY " + mouseY + " CX " + picker.cx + " CY " + picker.cy);
 }
 
 public void mouseReleased() {
@@ -510,7 +430,7 @@ public void mouseReleased() {
 
 public void mouseWheel(MouseEvent event) {
 	float e = event.getCount();
-//1  println(e);
+//  println(e);
 //  picker.currentHue += e;
 //  picker.update();
 }
@@ -544,10 +464,12 @@ public int musicRnd() {
 		lowTot+= ( soundIn * soundMultiplier );
 		count++;
 	}
+	
 	colorMode(HSB, 360, 100, 100);
 	if(lowTot > 1000) {
 		clr = color(round(random(360)), 100, 100);
 	}
+
 	s = PApplet.parseInt(saturation(clr));
 	h = PApplet.parseInt(hue(clr));
 	br = floor(map(lowTot, 0, count * soundMultiplier, 0, 100));
@@ -589,7 +511,11 @@ public int fade(float speed, float b) {
 	int c = color(h, 100, b);
 	return c;
 }
-class Slider {
+
+public int fadeToRandom(){ //TODO write this mode 
+	return color(134,3,431);
+}
+class Slider {	//TODO rewrite or rethink the Slider class!
 	float x;
 	float y;
 	float sWidth;
