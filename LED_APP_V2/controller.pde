@@ -47,7 +47,10 @@ void mousePressed() {
 		if (s.isOver())
 			s.lock = true;
 	}
-	picker.select(mouseX, mouseY);
+	float d = dist(picker.x, picker.y, mouseX, mouseY);
+
+	if(91 <  d && d < 109) // 90 - 110
+		picker.select(mouseX, mouseY);
 	//sendToArd(get(mouseX, mouseY));
 }
 
@@ -59,7 +62,7 @@ void mouseReleased() {
 }
 
 void mouseWheel(MouseEvent event) {
-  float e = event.getCount();
+	float e = event.getCount();
 //1  println(e);
 //  picker.currentHue += e;
 //  picker.update();

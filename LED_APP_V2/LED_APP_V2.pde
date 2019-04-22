@@ -48,7 +48,7 @@ void setup() {
 	cbFade = new Checkbox(225, 20, "Fade");
 	cbFadeToRandom = new Checkbox(225, 40, "Fade to Random");	
 	
-	picker = new Picker(200, 175, 200);
+	picker = new Picker(200, 200, 200);
 
 }
 

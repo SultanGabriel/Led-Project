@@ -68,7 +68,7 @@ public void setup() {
 	cbFade = new Checkbox(225, 20, "Fade");
 	cbFadeToRandom = new Checkbox(225, 40, "Fade to Random");	
 	
-	picker = new Picker(200, 175, 200);
+	picker = new Picker(200, 200, 200);
 
 }
 
@@ -494,7 +494,10 @@ public void mousePressed() {
 		if (s.isOver())
 			s.lock = true;
 	}
-	picker.select(mouseX, mouseY);
+	float d = dist(picker.x, picker.y, mouseX, mouseY);
+
+	if(91 <  d && d < 109) // 90 - 110
+		picker.select(mouseX, mouseY);
 	//sendToArd(get(mouseX, mouseY));
 }
 
@@ -506,7 +509,7 @@ public void mouseReleased() {
 }
 
 public void mouseWheel(MouseEvent event) {
-  float e = event.getCount();
+	float e = event.getCount();
 //1  println(e);
 //  picker.currentHue += e;
 //  picker.update();
