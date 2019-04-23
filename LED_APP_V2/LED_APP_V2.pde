@@ -2,6 +2,7 @@ Checkbox cbSynced, cbRandom, cbColorSync, cbFade, cbFadeToRandom;
 Slider sliders[] = new Slider[6];
 Picker picker;
 
+
 //	TODO REDESIGN THE APP
 //	TODO settings and profiles tab
 //  TODO better background color
