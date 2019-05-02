@@ -4,16 +4,18 @@ Picker picker;
 
 PImage settingsIcon;
 Settings settings;
-//	TODO add settings WIP
 
-//  TODO Add a way to turn the brightness down
+//	WIP REDESIGN THE APP
+//	WIP settings tab
+	//  TODO make the config a cfg or json 
 
-//	TODO REDESIGN THE APP
+	//  TODO better background 
+	//  TODO Add a way to turn the brightness down
+	//  TODO better icon / logo
+
 // 	TODO add profiles tab
-//  TODO better background 
-//  TODO better icon / logo
 //  TODO ADD PROFILES
-//  TODO make the config a cfg or json 
+
 //  TODO Be able to add custom modes
 
 void setup() {
