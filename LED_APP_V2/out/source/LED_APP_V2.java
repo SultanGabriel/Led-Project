@@ -22,16 +22,22 @@ Checkbox cbSynced, cbRandom, cbColorSync, cbFade, cbFadeToRandom;
 Slider sliders[] = new Slider[6];
 Picker picker;
 
+PImage settingsIcon;
+Settings settings;
+//	TODO add settings WIP
+
+//  TODO Add a way to turn the brightness down
 
 //	TODO REDESIGN THE APP
-//	TODO settings and profiles tab
-//  TODO better background color
+// 	TODO add profiles tab
+//  TODO better background 
 //  TODO better icon / logo
 //  TODO ADD PROFILES
-//  TODO make the config a cfg or json // it doen't really matter
+//  TODO make the config a cfg or json 
 //  TODO Be able to add custom modes
 
 public void setup() {
+
 	
 	setIcon();
 	minim = new Minim(this);
@@ -41,6 +47,11 @@ public void setup() {
 
 	icon.resize(50, 50);
 
+	settingsIcon = loadImage(settingsIconPATH);
+	settingsIcon.resize(25, 25);
+
+	settings = new Settings(width - 30, 5);
+	settings.setup();
 // -- Initialization Classes -- //
 	//red
 	sliders[0] = new Slider(50, 150, 300, 0, 255);
@@ -88,20 +99,32 @@ int selectedColor;
 public void draw() {
 	RGB();
 	background(bgColor);
+
 	image(icon, 0, 0);
 
-	cbSynced.update();
-	cbRandom.update();
-	cbColorSync.update();
-	cbFade.update();
-	cbFadeToRandom.update();
+	if(!settings.open) {
+
+		cbSynced.update();
+		cbRandom.update();
+		cbColorSync.update();
+		cbFade.update();
+		cbFadeToRandom.update();
+	}
+
+	//TODO the random and hue checkboxes should not be able to be checked
+	//				 at the same time
 
 	randomSync = cbRandom.checked;
 	musicSinced = cbSynced.checked;
 	colorSync = cbColorSync.checked;
 	fade = cbFade.checked;
 
-	if(!fade && !colorSync) {
+	settings.update();
+	settings.drawButton();
+
+	if(settings.open) {
+		settings.show();
+	} else if(!fade && !colorSync) {
 		picker.drawPicker();
 		//sliders[5].update();
 	} else if(colorSync) {
@@ -113,8 +136,9 @@ public void draw() {
 
 	//sliderColor = color(sliders[0].value, sliders[1].value, sliders[2].value);
 	selectedColor = picker.currentColor; //TODO REWRITE THE MDOE SELECTOR ( USE SWITCH )
-	
-	if (musicSinced && !colorSync && !randomSync) { //SYNC ONE COLOR
+	if(settings.open) {
+
+	} else if (musicSinced && !colorSync && !randomSync) { //SYNC ONE COLOR
 		c = musicOneColor(selectedColor);
 		sendToArd(c);
 
@@ -134,7 +158,7 @@ public void draw() {
 		sendToArd(c);
 
 	} else {
-		if(c != selectedColor){
+		if(c != selectedColor) {
 			sendToArd(selectedColor);
 		}
 		c = selectedColor;
@@ -160,85 +184,87 @@ public void HSB(){
 public void RGB(){
 	colorMode(RGB, 255, 255, 255);
 }
-public class Checkbox {	//TODO this needs some touching up!!
-int x, y;
-int size = 10;
-int hSize = PApplet.parseInt(size / 2);
-boolean mOver = false;
-boolean checked = false;
-String label;
+public class Checkbox { //TODO this needs some touching up!!
+	int x, y;
+	int size = 10;
+	int hSize = PApplet.parseInt(size / 2);
+	boolean mOver = false;
+	boolean checked = false;
+	String label;
 
-boolean textRect = false;
+	boolean textRect = false;
 
-Checkbox cb;
-boolean gotCB = false;
-boolean cbChecked = true;
+	Checkbox cb;
+	boolean gotCB = false;
+	boolean cbChecked = true;
 
-Checkbox(int x_, int y_, String label_) {
-	x = x_;
-	y = y_;
-	label = label_;
-}
+	Checkbox(int x_, int y_, String label_) {
+		x = x_;
+		y = y_;
+		label = label_;
+	}
 
-Checkbox(int x_, int y_, String label_, Checkbox cb_) {
-	gotCB = true;
-	cb = cb_;
-	x = x_;
-	y = y_;
-	label = label_;
-}
+	Checkbox(int x_, int y_, String label_, Checkbox cb_) {
+		gotCB = true;
+		cb = cb_;
+		x = x_;
+		y = y_;
+		label = label_;
+	}
 
-public void show() {
-	textSize(size * 1.25f);
-	if (cbChecked) {
-		fill(255);
-		stroke(0);
-		strokeWeight(1);
-		rect(x - 0.5f * size, y - 0.5f * size, size, size);
+	public void show() {
+		RGB();
+		textAlign(LEFT, BASELINE);
+		textSize(size * 1.25f);
+		if (cbChecked) {
+			stroke(0);
+			strokeWeight(1);
+			fill(255);
+			rect(x - 0.5f * size, y - 0.5f * size, size, size);
 
-		if (textRect) {
-			int z = floor(textWidth(label));
-			rect(x + hSize + 2, y - hSize - 2, z + 4, size + 4);
-		}
+			if (textRect) {
+				int z = floor(textWidth(label));
+				rect(x + hSize + 2, y - hSize - 2, z + 4, size + 4);
+			}
 
-		if (checked) {
+			if (checked) {
+				noStroke();
+				fill(255, 0, 0);
+				rect(x - 0.5f * size + size * 0.16f, y - hSize + size * 0.16f, size * 0.7f, size * 0.7f);
+			}
+
 			noStroke();
-			fill(255, 0, 0);
-			rect(x - 0.5f * size + size * 0.16f, y - hSize + size * 0.16f, size * 0.7f, size * 0.7f);
+			fill(0);
+			text(label, x + size * 0.5f + 5, y + hSize);
+		}
+	}
+
+	int ml;
+
+	public void update() {
+		if (gotCB) {
+			cbChecked = cb.checked;
+
+		} else {
+			cbChecked = true;
+
 		}
 
-		noStroke();
-		fill(0);
-		text(label, x + size * 0.5f + 5, y + hSize);
+		int mx = mouseX;
+		int my = mouseY;
+
+		mOver = false;
+		if (x - size / 2 < mx && x + size / 2 > mx &&
+		    y - size / 2 < my && y + size / 2 > my) {
+			mOver = true;
+		}
+
+		if (mOver && mousePressed && ml + 100 < millis() ) {
+			checked = !checked;
+			ml = millis();
+		}
+		this.show();
 	}
-}
-
-int ml;
-
-public void update() {
-	if (gotCB) {
-		cbChecked = cb.checked;
-
-	} else {
-		cbChecked = true;
-		
-	}
-
-	int mx = mouseX;
-	int my = mouseY;
-
-	mOver = false;
-	if (x - size / 2 < mx && x + size / 2 > mx &&
-	    y - size / 2 < my && y + size / 2 > my) {
-		mOver = true;
-	}
-
-	if (mOver && mousePressed && ml + 100 < millis() ) {
-		checked = !checked;
-		ml = millis();
-	}
-	this.show();
-}
 }
 class Picker {
 	float x;
@@ -345,7 +371,6 @@ boolean randomSync = false;
 boolean colorSync = false;
 boolean fade = false;
 //arduino settings
-boolean connectToArduino = false;
 int baudrate = 250000;
 String COM = "COM5";
 //debug !
@@ -354,17 +379,21 @@ boolean debugMouse = false;
 //app settings
 int bgColor = color(200);
 //soundmultiplier
-int soundMultiplier = 20;
+int soundMultiplier = 19;
 //default Color ; the color the app starts with
-int defaultColor = color(255,0,0);
+int defaultColor = color(255, 0, 0);
+//icons
+String settingsIconPATH = "./Resources/settings.png";
+String iconPATH = "./resources/icon.png";
+//
+int black = color(0);
 /*
+   int r = (c >> 16) & 0xFF;
+   int g = (c >> 8) & 0xFF;
+   int b = c & 0xFF;
+   println("r" + r + " g" + g + " b" + b);
 
-int r = (c >> 16) & 0xFF;
-int g = (c >> 8) & 0xFF;
-int b = c & 0xFF;
-println("r" + r + " g" + g + " b" + b);
-
-*/
+ */
 
 
 
@@ -390,10 +419,9 @@ public void sendToArd(int c) {
 	ard.write(g);
 	ard.write(b);
 }
-
 PImage icon;
 public void setIcon(){
-	icon = loadImage("./resources/icon.png");
+	icon = loadImage(iconPATH);
 	surface.setIcon(icon);
 }
 
@@ -416,9 +444,13 @@ public void mousePressed() {
 	}
 	float d = dist(picker.x, picker.y, mouseX, mouseY);
 
-	if(91 <  d && d < 119) // 90 - 110
+	if(91 <  d && d < 119) {         // 90 - 110
 		picker.select(mouseX, mouseY);
-	
+	}
+
+	if(settings.mouseOver) {
+		settings.open = !settings.open;
+	}
 	//println("MX " + mouseX + " MY " + mouseY + " CX " + picker.cx + " CY " + picker.cy);
 }
 
@@ -428,7 +460,11 @@ public void mouseReleased() {
 		s.lock = false;
 	}
 }
+public void mouseMooved(){
 
+
+
+}
 public void mouseWheel(MouseEvent event) {
 	float e = event.getCount();
 //  println(e);
@@ -514,7 +550,61 @@ public int fade(float speed, float b) {
 }
 
 public int fadeToRandom(){ //TODO write this mode 
-	return color(134,3,431);
+	return color(134,3,171);
+}
+class Settings {//TODO ADD MORE OPTIONS
+	int buttonX;
+	int buttonY;
+	boolean mouseOver;
+	boolean open = false;
+
+	Checkbox debugCb, debugMouseCb;
+
+	Settings(int x, int y){
+		buttonX = x;
+		buttonY = y;
+	}
+
+	public void setup(){
+		debugCb = new Checkbox(140, 60, "Debug");
+		debugMouseCb = new Checkbox(140, 80, "Debug Mouse");
+	}
+
+	public void drawButton(){
+		if(mouseOver) {
+			HSB();
+			noStroke();
+			fill(hue(bgColor), saturation(bgColor), brightness(bgColor) - 20);
+			rect(buttonX, buttonY, 25, 25);
+		}
+		if(!open) {
+			image(settingsIcon, width - 30, 5);
+		} else {
+			stroke(0);
+			strokeWeight(2);
+			line(370, 5, 395, 30);
+			line(395, 5, 370, 30);
+		}
+	}
+
+	public void update(){
+		debug = debugCb.checked;
+		debugMouse = debugMouseCb.checked;
+
+		if(mouseX > 370 && mouseY < 30) {
+			settings.mouseOver = true;
+		} else {
+			mouseOver = false;
+		}
+	}
+	// TODO add more tabs and ability to have more tabs
+	public void show(){
+		textAlign(CENTER, BOTTOM);
+		textSize(20);
+		text("Developer Options", 200, 30);
+		debugCb.update();
+		debugMouseCb.update();
+	}
 }
 class Slider {	//TODO rewrite or rethink the Slider class!
 	float x;

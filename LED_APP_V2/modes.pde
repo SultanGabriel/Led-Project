@@ -77,5 +77,5 @@ color fade(float speed, float b) {
 }
 
 color fadeToRandom(){ //TODO write this mode 
-	return color(134,3,431);
+	return color(134,3,171);
 }

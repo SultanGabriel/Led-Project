@@ -2,16 +2,22 @@ Checkbox cbSynced, cbRandom, cbColorSync, cbFade, cbFadeToRandom;
 Slider sliders[] = new Slider[6];
 Picker picker;
 
+PImage settingsIcon;
+Settings settings;
+//	TODO add settings WIP
+
+//  TODO Add a way to turn the brightness down
 
 //	TODO REDESIGN THE APP
-//	TODO settings and profiles tab
-//  TODO better background color
+// 	TODO add profiles tab
+//  TODO better background 
 //  TODO better icon / logo
 //  TODO ADD PROFILES
-//  TODO make the config a cfg or json // it doen't really matter
+//  TODO make the config a cfg or json 
 //  TODO Be able to add custom modes
 
 void setup() {
+
 	size(400, 350);
 	setIcon();
 	minim = new Minim(this);
@@ -21,6 +27,11 @@ void setup() {
 
 	icon.resize(50, 50);
 
+	settingsIcon = loadImage(settingsIconPATH);
+	settingsIcon.resize(25, 25);
+
+	settings = new Settings(width - 30, 5);
+	settings.setup();
 // -- Initialization Classes -- //
 	//red
 	sliders[0] = new Slider(50, 150, 300, 0, 255);
@@ -68,20 +79,32 @@ color selectedColor;
 void draw() {
 	RGB();
 	background(bgColor);
+
 	image(icon, 0, 0);
 
-	cbSynced.update();
-	cbRandom.update();
-	cbColorSync.update();
-	cbFade.update();
-	cbFadeToRandom.update();
+	if(!settings.open) {
+
+		cbSynced.update();
+		cbRandom.update();
+		cbColorSync.update();
+		cbFade.update();
+		cbFadeToRandom.update();
+	}
+
+	//TODO the random and hue checkboxes should not be able to be checked
+	//				 at the same time
 
 	randomSync = cbRandom.checked;
 	musicSinced = cbSynced.checked;
 	colorSync = cbColorSync.checked;
 	fade = cbFade.checked;
 
-	if(!fade && !colorSync) {
+	settings.update();
+	settings.drawButton();
+
+	if(settings.open) {
+		settings.show();
+	} else if(!fade && !colorSync) {
 		picker.drawPicker();
 		//sliders[5].update();
 	} else if(colorSync) {
@@ -93,8 +116,9 @@ void draw() {
 
 	//sliderColor = color(sliders[0].value, sliders[1].value, sliders[2].value);
 	selectedColor = picker.currentColor; //TODO REWRITE THE MDOE SELECTOR ( USE SWITCH )
-	
-	if (musicSinced && !colorSync && !randomSync) { //SYNC ONE COLOR
+	if(settings.open) {
+
+	} else if (musicSinced && !colorSync && !randomSync) { //SYNC ONE COLOR
 		c = musicOneColor(selectedColor);
 		sendToArd(c);
 
@@ -114,7 +138,7 @@ void draw() {
 		sendToArd(c);
 
 	} else {
-		if(c != selectedColor){
+		if(c != selectedColor) {
 			sendToArd(selectedColor);
 		}
 		c = selectedColor;

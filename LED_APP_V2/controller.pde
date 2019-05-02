@@ -23,10 +23,9 @@ void sendToArd(color c) {
 	ard.write(g);
 	ard.write(b);
 }
-
 PImage icon;
 void setIcon(){
-	icon = loadImage("./resources/icon.png");
+	icon = loadImage(iconPATH);
 	surface.setIcon(icon);
 }
 
@@ -49,9 +48,13 @@ void mousePressed() {
 	}
 	float d = dist(picker.x, picker.y, mouseX, mouseY);
 
-	if(91 <  d && d < 119) // 90 - 110
+	if(91 <  d && d < 119) {         // 90 - 110
 		picker.select(mouseX, mouseY);
-	
+	}
+
+	if(settings.mouseOver) {
+		settings.open = !settings.open;
+	}
 	//println("MX " + mouseX + " MY " + mouseY + " CX " + picker.cx + " CY " + picker.cy);
 }
 
@@ -61,7 +64,11 @@ void mouseReleased() {
 		s.lock = false;
 	}
 }
+void mouseMooved(){
 
+
+
+}
 void mouseWheel(MouseEvent event) {
 	float e = event.getCount();
 //  println(e);
