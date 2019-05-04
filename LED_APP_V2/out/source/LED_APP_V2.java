@@ -24,16 +24,18 @@ Picker picker;
 
 PImage settingsIcon;
 Settings settings;
-//	TODO add settings WIP
 
+//	WIP REDESIGN THE APP
+//	WIP settings tab
+//  TODO make the config a cfg or json
+
+//  TODO better background
 //  TODO Add a way to turn the brightness down
-
-//	TODO REDESIGN THE APP
-// 	TODO add profiles tab
-//  TODO better background 
 //  TODO better icon / logo
+
+//      TODO add profiles tab
 //  TODO ADD PROFILES
-//  TODO make the config a cfg or json 
+
 //  TODO Be able to add custom modes
 
 public void setup() {
@@ -66,7 +68,7 @@ public void setup() {
 	sliders[2].id = "Red";
 	sliders[2].dotColor = color(0, 0, 3255);
 	//fade speed
-	sliders[3] = new Slider(50, 150, 300, 0.01f, 2, 0.2f);
+	sliders[3] = new Slider(50, 150, 300, 0.01f, 2, 0.5f);
 	sliders[3].id = "Fade Speed";
 	//fade brightness
 	sliders[4] = new Slider(50, 100, 300, 0, 100, 25);
@@ -102,14 +104,20 @@ public void draw() {
 
 	image(icon, 0, 0);
 
-	if(!settings.open) {
+	cbSynced.update();
+	cbRandom.update();
+	cbColorSync.update();
+	cbFade.update();
+	cbFadeToRandom.update();
 
-		cbSynced.update();
-		cbRandom.update();
-		cbColorSync.update();
-		cbFade.update();
-		cbFadeToRandom.update();
+	if(!settings.open) {
+		cbSynced.show();
+		cbRandom.show();
+		cbColorSync.show();
+		cbFade.show();
+		cbFadeToRandom.show();
 	}
+
 
 	//TODO the random and hue checkboxes should not be able to be checked
 	//				 at the same time
@@ -118,27 +126,25 @@ public void draw() {
 	musicSinced = cbSynced.checked;
 	colorSync = cbColorSync.checked;
 	fade = cbFade.checked;
-
+	fadetorandom = cbFadeToRandom.checked;
 	settings.update();
 	settings.drawButton();
 
 	if(settings.open) {
 		settings.show();
-	} else if(!fade && !colorSync) {
+	} else if(!fade && !colorSync && !fadetorandom) {
 		picker.drawPicker();
 		//sliders[5].update();
 	} else if(colorSync) {
 		sliders[5].update();
-	} else if(fade) {
+	} else if(fade || fadetorandom) {
 		sliders[3].update();
 		sliders[4].update();
 	}
 
 	//sliderColor = color(sliders[0].value, sliders[1].value, sliders[2].value);
 	selectedColor = picker.currentColor; //TODO REWRITE THE MDOE SELECTOR ( USE SWITCH )
-	if(settings.open) {
-
-	} else if (musicSinced && !colorSync && !randomSync) { //SYNC ONE COLOR
+	if (musicSinced && !colorSync && !randomSync) {   //SYNC ONE COLOR
 		c = musicOneColor(selectedColor);
 		sendToArd(c);
 
@@ -157,18 +163,18 @@ public void draw() {
 		c = fade(speed, br);
 		sendToArd(c);
 
-	} else {
-		if(c != selectedColor) {
-			sendToArd(selectedColor);
-		}
+	} else if (fadetorandom) {
+		float br = sliders[4].value;
+		float speed = sliders[3].value;
+		c = fadeToRandom(c, speed, br);
+		sendToArd(c);
+	} else if(c != selectedColor) {
+		sendToArd(selectedColor);
 		c = selectedColor;
 	}
 
 	//colorWheel(125);
 	//colorSquare();
-
-	//ellipse(200, 175, 250, 250);
-
 
 	if (debugMouse) {
 		text(mouseX + ", " + mouseY, mouseX + 5, mouseY - 5);
@@ -263,7 +269,6 @@ public class Checkbox { //TODO this needs some touching up!!
 			checked = !checked;
 			ml = millis();
 		}
-		this.show();
 	}
 }
 class Picker {
@@ -370,6 +375,7 @@ boolean musicSinced = false;
 boolean randomSync = false;
 boolean colorSync = false;
 boolean fade = false;
+boolean fadetorandom = false;
 //arduino settings
 int baudrate = 250000;
 String COM = "COM5";
@@ -501,7 +507,7 @@ public int musicRnd() {
 		lowTot+= ( soundIn * soundMultiplier );
 		count++;
 	}
-	
+
 	colorMode(HSB, 360, 100, 100);
 	if(lowTot > 1000) {
 		clr = color(round(random(360)), 100, 100);
@@ -548,9 +554,29 @@ public int fade(float speed, float b) {
 	int c = color(h, 100, b);
 	return c;
 }
+int randomColor;
 
-public int fadeToRandom(){ //TODO write this mode 
-	return color(134,3,171);
+public int fadeToRandom(int c, float increment, float brightness){ //WIP write the fadeToRandom mode
+	HSB();
+	if (randomColor == 0 || floor(hue(c)) == floor(hue(randomColor))) {
+		int rnd = round(random(360));
+		println(rnd);
+		randomColor = color(rnd, 100, 100);
+	}
+	println(hue(c), hue(randomColor), increment);
+
+
+	//if(h == 0) h = 1;
+	float h = hue(c);
+	float hRnd = hue(randomColor);
+	if(h < hRnd) {
+		h += increment * 2;
+	} else if (h > hRnd) {
+		h -= increment * 2;
+	}
+//	h = floor(h);
+
+	return color(h, 100, brightness);
 }
 class Settings {//TODO ADD MORE OPTIONS
 	int buttonX;
@@ -572,9 +598,10 @@ class Settings {//TODO ADD MORE OPTIONS
 
 	public void drawButton(){
 		if(mouseOver) {
-			HSB();
+			//HSB();
 			noStroke();
-			fill(hue(bgColor), saturation(bgColor), brightness(bgColor) - 20);
+			//fill(hue(bgColor), saturation(bgColor), brightness(bgColor) - 20);
+			fill(red(bgColor) - 50);
 			rect(buttonX, buttonY, 25, 25);
 		}
 		if(!open) {
@@ -601,12 +628,13 @@ class Settings {//TODO ADD MORE OPTIONS
 	public void show(){
 		textAlign(CENTER, BOTTOM);
 		textSize(20);
+		fill(255);
 		text("Developer Options", 200, 30);
 		debugCb.update();
 		debugMouseCb.update();
 	}
 }
-class Slider {	//TODO rewrite or rethink the Slider class!
+class Slider {	//TODO rewrite or rethink the Slider class! //TODO be able to click on the slider and have it move to the mouse position
 	float x;
 	float y;
 	float sWidth;

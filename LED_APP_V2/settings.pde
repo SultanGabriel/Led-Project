@@ -18,9 +18,10 @@ class Settings {//TODO ADD MORE OPTIONS
 
 	void drawButton(){
 		if(mouseOver) {
-			HSB();
+			//HSB();
 			noStroke();
-			fill(hue(bgColor), saturation(bgColor), brightness(bgColor) - 20);
+			//fill(hue(bgColor), saturation(bgColor), brightness(bgColor) - 20);
+			fill(red(bgColor) - 50);
 			rect(buttonX, buttonY, 25, 25);
 		}
 		if(!open) {
@@ -43,12 +44,15 @@ class Settings {//TODO ADD MORE OPTIONS
 			mouseOver = false;
 		}
 	}
-	// TODO add more tabs and ability to have more tabs
 	void show(){
 		textAlign(CENTER, BOTTOM);
 		textSize(20);
+		fill(255);
 		text("Developer Options", 200, 30);
 		debugCb.update();
 		debugMouseCb.update();
 	}
 }
+//	TODO add more tabs and ability to have more tabs
+//	TODO add a type of dropdown menu or somethings to select the COM port
+//	TODO Add a soundmultiplier option

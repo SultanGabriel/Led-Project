@@ -77,6 +77,5 @@ public class Checkbox { //TODO this needs some touching up!!
 			checked = !checked;
 			ml = millis();
 		}
-		this.show();
 	}
 }

@@ -2,6 +2,7 @@ boolean musicSinced = false;
 boolean randomSync = false;
 boolean colorSync = false;
 boolean fade = false;
+boolean fadetorandom = false;
 //arduino settings
 int baudrate = 250000;
 String COM = "COM5";

@@ -4,16 +4,16 @@ Picker picker;
 
 PImage settingsIcon;
 Settings settings;
-
+//	FIXME you can't change the brightness 
+//	FIXME the app stops responding, give the option to select the com port 
 //	WIP REDESIGN THE APP
 //	WIP settings tab
-	//  TODO make the config a cfg or json 
+//  TODO make the config a cfg or json
 
-	//  TODO better background 
-	//  TODO Add a way to turn the brightness down
-	//  TODO better icon / logo
+//  TODO better background
+//  TODO better icon / logo
 
-// 	TODO add profiles tab
+//  TODO add profiles tab
 //  TODO ADD PROFILES
 
 //  TODO Be able to add custom modes
@@ -48,7 +48,7 @@ void setup() {
 	sliders[2].id = "Red";
 	sliders[2].dotColor = color(0, 0, 3255);
 	//fade speed
-	sliders[3] = new Slider(50, 150, 300, 0.01, 2, 0.2);
+	sliders[3] = new Slider(50, 150, 300, 0.01, 2, 0.5);
 	sliders[3].id = "Fade Speed";
 	//fade brightness
 	sliders[4] = new Slider(50, 100, 300, 0, 100, 25);
@@ -84,14 +84,20 @@ void draw() {
 
 	image(icon, 0, 0);
 
-	if(!settings.open) {
+	cbSynced.update();
+	cbRandom.update();
+	cbColorSync.update();
+	cbFade.update();
+	cbFadeToRandom.update();
 
-		cbSynced.update();
-		cbRandom.update();
-		cbColorSync.update();
-		cbFade.update();
-		cbFadeToRandom.update();
+	if(!settings.open) {
+		cbSynced.show();
+		cbRandom.show();
+		cbColorSync.show();
+		cbFade.show();
+		cbFadeToRandom.show();
 	}
+
 
 	//TODO the random and hue checkboxes should not be able to be checked
 	//				 at the same time
@@ -100,27 +106,25 @@ void draw() {
 	musicSinced = cbSynced.checked;
 	colorSync = cbColorSync.checked;
 	fade = cbFade.checked;
-
+	fadetorandom = cbFadeToRandom.checked;
 	settings.update();
 	settings.drawButton();
 
 	if(settings.open) {
 		settings.show();
-	} else if(!fade && !colorSync) {
+	} else if(!fade && !colorSync && !fadetorandom) {
 		picker.drawPicker();
 		//sliders[5].update();
 	} else if(colorSync) {
 		sliders[5].update();
-	} else if(fade) {
+	} else if(fade || fadetorandom) {
 		sliders[3].update();
 		sliders[4].update();
 	}
 
 	//sliderColor = color(sliders[0].value, sliders[1].value, sliders[2].value);
 	selectedColor = picker.currentColor; //TODO REWRITE THE MDOE SELECTOR ( USE SWITCH )
-	if(settings.open) {
-
-	} else if (musicSinced && !colorSync && !randomSync) { //SYNC ONE COLOR
+	if (musicSinced && !colorSync && !randomSync) {   //SYNC ONE COLOR
 		c = musicOneColor(selectedColor);
 		sendToArd(c);
 
@@ -139,18 +143,18 @@ void draw() {
 		c = fade(speed, br);
 		sendToArd(c);
 
-	} else {
-		if(c != selectedColor) {
-			sendToArd(selectedColor);
-		}
+	} else if (fadetorandom) {
+		float br = sliders[4].value;
+		float speed = sliders[3].value;
+		c = fadeToRandom(c, speed, br);
+		sendToArd(c);
+	} else if(c != selectedColor) {
+		sendToArd(selectedColor);
 		c = selectedColor;
 	}
 
 	//colorWheel(125);
 	//colorSquare();
-
-	//ellipse(200, 175, 250, 250);
-
 
 	if (debugMouse) {
 		text(mouseX + ", " + mouseY, mouseX + 5, mouseY - 5);
