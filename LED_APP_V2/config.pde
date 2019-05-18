@@ -12,7 +12,7 @@ boolean debugMouse = false;
 //app settings
 color bgColor = color(200);
 //soundmultiplier
-int soundMultiplier = 19;
+int soundMultiplier = 20;
 //default Color ; the color the app starts with
 color defaultColor = color(255, 0, 0);
 //icons

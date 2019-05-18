@@ -1,5 +1,5 @@
-class Settings {//TODO ADD MORE OPTIONS
-	int buttonX;
+class Settings { //TODO ADD MORE OPTIONS
+	int buttonX; 
 	int buttonY;
 	boolean mouseOver;
 	boolean open = false;
@@ -50,7 +50,9 @@ class Settings {//TODO ADD MORE OPTIONS
 		fill(255);
 		text("Developer Options", 200, 30);
 		debugCb.update();
+		debugCb.show();
 		debugMouseCb.update();
+		debugMouseCb.show();
 	}
 }
 //	TODO add more tabs and ability to have more tabs
