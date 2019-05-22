@@ -1,5 +1,9 @@
 import http.requests.*;
+import ddf.minim.*;
+import javax.sound.sampled.*;
 
+AudioInput player;
+Minim minim;
 //D3 RED D6 GREEN D11 BLUE
 String link = "http://blynk-cloud.com/df45bf3e324b41929d3eb505832f2d82/update/";//D3?value=150"
 //GetRequest get = new GetRequest();
@@ -11,24 +15,21 @@ void setup() {
   noStroke();
   picker = new Picker(250, 150, 200);
   send(color(0));
+  minim = new Minim(this);
+  getMixer();
+  player = minim.getLineIn();
 }
 
 void draw() {
   colorMode(HSB, 360, 100, 100);
   background(255);
   picker.drawPicker();
+  send(musicOneColor(color(0, 100, 100)));
 }
+
 GetRequest get;
 void mousePressed() {
   picker.select(mouseX, mouseY);
-}
-void send(color c) {
-  get = new GetRequest(link + "D3?value=" + red(c));
-  get.send();
-  get = new GetRequest(link + "D6?value=" + green(c));
-  get.send();
-  get = new GetRequest(link + "D11?value=" + blue(c));
-  get.send();
 }
 
 
@@ -97,5 +98,38 @@ class Picker {
     ellipse(cx, cy, 30, 30);
 
     //rect(mouseX - 10, mouseY - 10, 20, 20, 25);
+  }
+}
+
+int max = 1974;
+color musicOneColor(color clr) {
+  int count = 0;
+  float soundIn;
+  int lowTot = 0;
+  int s, h, br;
+
+  for (int i = 0; i < player.left.size()/2.0; i+=5) {
+    soundIn = abs(( player.left.get(i) + player.right.get(i))/2);
+    lowTot+= ( soundIn * 20 );
+    count++;
+  }
+
+  colorMode(HSB, 360, 100, 100);
+
+  s = int(saturation(clr));
+  h = int(hue(clr));
+  br = int(map(lowTot, 0, count * 20, 0, 100));
+
+  return color(h, s, br);
+}
+
+void getMixer() {
+  Mixer.Info[] mixerInfo = AudioSystem.getMixerInfo();
+  for (Mixer.Info m : mixerInfo) {
+    String name = m.getName();
+    if (name.contains("Stereomix")) {
+      minim.setInputMixer(AudioSystem.getMixer(m));
+      break;
+    }
   }
 }

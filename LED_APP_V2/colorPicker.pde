@@ -2,7 +2,7 @@ class Picker {
 	float x;
 	float y;
 	float radius;
-	float width = 15;
+	float w = 15; // width
 	float increment = PI / 180;
 	float currentHue = -75;
 	color currentColor;
@@ -16,27 +16,22 @@ class Picker {
 	}
 
 	void select(int mX, int mY){
-//		int mX = mouseX;
-//		int mY = mouseY;
-
 		currentColor = get(mX, mY);
 		currentHue = hue(currentColor);
 
 		angle = degrees(atan(mY/mX));
-
-		sendToArd(currentColor);
 	}
 
 	void update(){
 		//currentHue = currentHue % 360;
 		//currentHue = abs(currentHue);
 		//currentColor = color(currentHue, 100, 100);
-		sendToArd(currentColor);
+		//sendToArd(currentColor);
 	}
-
-	void drawPicker(){
+	float cx, cy;
+	void drawPicker(){  //TODO get this working better
 		noFill();
-		strokeWeight(width);
+		strokeWeight(w);
 		HSB();
 
 		for(float i = 0; i < TWO_PI; i += increment) {
@@ -44,23 +39,19 @@ class Picker {
 			stroke(h, 100, 100);
 			arc(x, y, radius, radius, i, i + increment);
 		}
-
-		float cy = ( radius ) / 2 * sin(radians(currentHue)) + y;
-		float cx = ( radius ) / 2 * cos(radians(currentHue)) + x;
+		cx = round((radius) / 2 * cos(radians(currentHue)) + x);
+		cy = round((radius) / 2 * sin(radians(currentHue)) + y);
 
 		stroke(0);
 		strokeWeight(5);
-
 		line(x, y, cx, cy);
 
 		strokeWeight(2);
-
-		fill(currentHue, 100, 100);
-
+		fill(currentColor);
 		ellipse(x, y, 50, 50);
 		//triangle();
 
-		ellipse(cx, cy, 30, 30);
+		ellipse(cx, cy, w * 2, w * 2);
 
 		//rect(mouseX - 10, mouseY - 10, 20, 20, 25);
 	}

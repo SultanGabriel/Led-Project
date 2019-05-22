@@ -28,10 +28,12 @@ color musicRnd() {
 		lowTot+= ( soundIn * soundMultiplier );
 		count++;
 	}
+
 	colorMode(HSB, 360, 100, 100);
 	if(lowTot > 1000) {
 		clr = color(round(random(360)), 100, 100);
 	}
+
 	s = int(saturation(clr));
 	h = int(hue(clr));
 	br = floor(map(lowTot, 0, count * soundMultiplier, 0, 100));
@@ -72,4 +74,28 @@ color fade(float speed, float b) {
 
 	color c = color(h, 100, b);
 	return c;
+}
+color randomColor;
+
+color fadeToRandom(color c, float increment, float brightness){ //WIP write the fadeToRandom mode
+	HSB(); //FIXME This isn't working right =////
+	if (randomColor == 0 || floor(hue(c)) == floor(hue(randomColor))) {
+		int rnd = round(random(360));
+		println(rnd);
+		randomColor = color(rnd, 100, 100);
+	}
+	println(hue(c), hue(randomColor), increment);
+
+
+	//if(h == 0) h = 1;
+	float h = hue(c);
+	float hRnd = hue(randomColor);
+	if(h < hRnd) {
+		h += increment * 2;
+	} else if (h > hRnd) {
+		h -= increment * 2;
+	}
+//	h = floor(h);
+
+	return color(h, 100, brightness);
 }
