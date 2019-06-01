@@ -14,6 +14,7 @@ void setup() {
   size(500, 300);
   noStroke();
   picker = new Picker(250, 150, 200);
+  send(color(0));
   minim = new Minim(this);
   getMixer();
   player = minim.getLineIn();
