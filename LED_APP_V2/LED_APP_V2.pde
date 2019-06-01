@@ -3,7 +3,7 @@ Slider fadeSpeedSlider, brightnessSlider;       //fadeBrightnessSlider
 Slider vBrightnessSlider; // VERTICAL SLIDER
 Picker picker;
 Settings settings;
-
+PImage settingsIcon;
 // IDEA try some color as bg or the user could set the color in the settings, but just a BIT color like a black with a tint of blue or red
 
 //	FIXME you can't change the brightness 
