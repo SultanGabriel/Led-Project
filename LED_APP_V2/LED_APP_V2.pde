@@ -4,8 +4,6 @@ Picker picker;
 
 PImage settingsIcon;
 Settings settings;
-// so does it work ?
-//noo ??
 
 // IDEA try some color as bg or the user could set the color in the settings, but just a BIT color like a black with a tint of blue or red
 
@@ -27,8 +25,9 @@ Settings settings;
 //  TODO Be able to add custom modes
 
 void setup() {
-
-	size(400, 350);
+	size(700, 400);
+  surface.setResizable(true);
+  surface.setTitle("LED Controller");
 	setIcon();
 	minim = new Minim(this);
 	getMixer();
@@ -79,7 +78,7 @@ void setup() {
 	cbFade = new Checkbox(225, 20, "Fade");
 	cbFadeToRandom = new Checkbox(225, 40, "Fade to Random");
 
-	picker = new Picker(200, 200, 200);
+	picker = new Picker(550, 210, 200);
 	picker.currentColor = defaultColor;
 }
 
@@ -91,7 +90,7 @@ void draw() {
 	background(bgColor);
 
 	image(icon, 0, 0);
-
+  drawRightMenuBar();
 	cbSynced.update();
 	cbRandom.update();
 	cbColorSync.update();
@@ -170,6 +169,14 @@ void draw() {
 		line(mouseX, 0, mouseX, height);
 		line(0, mouseY, width, mouseY);
 	}
+}
+
+void drawRightMenuBar(){
+  noStroke();
+  fill(sidebarColor);
+  rect(400, 0, 300, height);
+  fill(topbarColor);
+  rect(400, 0, 300, 40);
 }
 
 void HSB(){
