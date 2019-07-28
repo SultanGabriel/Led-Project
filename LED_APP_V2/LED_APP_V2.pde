@@ -4,7 +4,7 @@ Picker picker;
 
 PImage settingsIcon;
 Settings settings;
-
+// IDEA turn it into OR made a dark mode
 // IDEA try some color as bg or the user could set the color in the settings, but just a BIT color like a black with a tint of blue or red
 
 //	FIXME you can't change the brightness 
@@ -25,7 +25,7 @@ Settings settings;
 //  TODO Be able to add custom modes
 
 void setup() {
-	size(700, 400);
+	size(700, 350);
   surface.setResizable(true);
   surface.setTitle("LED Controller");
 	setIcon();
@@ -121,6 +121,7 @@ void draw() {
 		settings.show();
 	} else if(!fade && !colorSync && !fadetorandom) {
 		picker.drawPicker();
+
 		//sliders[5].update();
 	} else if(colorSync) {
 		sliders[5].update();
@@ -160,8 +161,10 @@ void draw() {
 		c = selectedColor;
 	}
 
-	//colorWheel(125);
-	//colorSquare();
+  if(!settings.open){      
+    fill(selectedColor);
+    ellipse(200, 250, 50, 50);
+  }
 
 	if (debugMouse) {
 		text(mouseX + ", " + mouseY, mouseX + 5, mouseY - 5);
@@ -176,7 +179,7 @@ void drawRightMenuBar(){
   fill(sidebarColor);
   rect(400, 0, 300, height);
   fill(topbarColor);
-  rect(400, 0, 300, 40);
+  rect(400, 0, 300, 30);
 }
 
 void HSB(){

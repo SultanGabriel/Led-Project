@@ -14,6 +14,7 @@ boolean debugMouse = true;
 color bgColor = color(200);
 color sidebarColor = color(170);
 color topbarColor = color(150);
+color overButtonColor = color(120);
 //soundmultiplier
 int soundMultiplier = 19;
 //default Color ; the color the app starts with

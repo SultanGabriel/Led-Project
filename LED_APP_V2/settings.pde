@@ -21,14 +21,14 @@ class Settings {//TODO ADD MORE OPTIONS
 			//HSB();
 			noStroke();
 			//fill(hue(bgColor), saturation(bgColor), brightness(bgColor) - 20);
-			fill(red(bgColor) - 50);
-			rect(buttonX, buttonY, 25, 25);
+			fill(overButtonColor);
+			rect(width - 30, 0, 30, 30);
 		}
       stroke(0);
       strokeWeight(3);
-			line(width - 40, 10, width - 10, 10);
-			line(width - 40, 20, width - 10, 20);
-			line(width - 40, 30, width - 10, 30);
+			line(width - 25, 10, width - 5, 10);
+			line(width - 25, 15, width - 5, 15);
+			line(width - 25, 20, width - 5, 20);
       //image(settingsIcon, width - 30, 5);
 
 	}
