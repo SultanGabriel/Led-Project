@@ -9,11 +9,14 @@ Minim minim;
 void connectToArd() {
 	if (debug)
 		printArray(Serial.list());
-  if(outputEnable)
+	if(outputEnable)
   	ard = new Serial(this, COM, baudrate);
 }
 
 void sendToArd(color c) {
+  fill(c);
+  ellipse(200, 250, 50, 50);
+  
   if(outputEnable){
   	int r = ( c >> 16 ) & 0xFF;
   	int g = ( c >> 8 ) & 0xFF;
@@ -34,6 +37,7 @@ void setIcon(){
 
 void getMixer() {
 	Mixer.Info[] mixerInfo = AudioSystem.getMixerInfo();
+  println(mixerInfo);
 	for (Mixer.Info m : mixerInfo) {
 		String name = m.getName();
 		if (name.contains("Stereomix")) {

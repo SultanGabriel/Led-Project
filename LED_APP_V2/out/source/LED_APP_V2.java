@@ -6,6 +6,7 @@ import processing.opengl.*;
 import processing.serial.*; 
 import ddf.minim.*; 
 import javax.sound.sampled.*; 
+import java.awt.Dimension; 
 
 import java.util.HashMap; 
 import java.util.ArrayList; 
@@ -24,7 +25,7 @@ Picker picker;
 
 PImage settingsIcon;
 Settings settings;
-
+// IDEA turn it into OR made a dark mode
 // IDEA try some color as bg or the user could set the color in the settings, but just a BIT color like a black with a tint of blue or red
 
 //	FIXME you can't change the brightness 
@@ -35,7 +36,7 @@ Settings settings;
 //	WIP REDESIGN THE APP
 //	WIP settings tab
 //  TODO make the config a cfg or json
-
+//  TODO add more settings!!
 //  TODO better background
 //  TODO better icon / logo
 
@@ -48,6 +49,8 @@ public void setup() {
 	
   surface.setResizable(true);
   surface.setTitle("LED Controller");
+  frame.setMinimumSize(minimumWindowSize);
+
 	setIcon();
 	minim = new Minim(this);
 	getMixer();
@@ -110,7 +113,7 @@ public void draw() {
 	background(bgColor);
 
 	image(icon, 0, 0);
-  drawRightMenuBar();
+  	drawRightMenuBar();
 	cbSynced.update();
 	cbRandom.update();
 	cbColorSync.update();
@@ -180,11 +183,6 @@ public void draw() {
 		sendToArd(selectedColor);
 		c = selectedColor;
 	}
-
-  if(!settings.open){      
-    fill(selectedColor);
-    ellipse(200, 250, 50, 50);
-  }
 
 	if (debugMouse) {
 		text(mouseX + ", " + mouseY, mouseX + 5, mouseY - 5);
@@ -426,6 +424,8 @@ int black = color(0);
 
 
 
+
+Dimension minimumWindowSize = new Dimension(700, 350); //Change values for limit
 Serial ard;
 AudioInput player;
 Minim minim;
@@ -433,11 +433,14 @@ Minim minim;
 public void connectToArd() {
 	if (debug)
 		printArray(Serial.list());
-  if(outputEnable)
+	if(outputEnable)
   	ard = new Serial(this, COM, baudrate);
 }
 
 public void sendToArd(int c) {
+  fill(c);
+  ellipse(200, 250, 50, 50);
+  
   if(outputEnable){
   	int r = ( c >> 16 ) & 0xFF;
   	int g = ( c >> 8 ) & 0xFF;
@@ -458,6 +461,7 @@ public void setIcon(){
 
 public void getMixer() {
 	Mixer.Info[] mixerInfo = AudioSystem.getMixerInfo();
+  println(mixerInfo);
 	for (Mixer.Info m : mixerInfo) {
 		String name = m.getName();
 		if (name.contains("Stereomix")) {

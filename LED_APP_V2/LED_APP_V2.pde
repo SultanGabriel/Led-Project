@@ -15,7 +15,7 @@ Settings settings;
 //	WIP REDESIGN THE APP
 //	WIP settings tab
 //  TODO make the config a cfg or json
-
+//  TODO add more settings!!
 //  TODO better background
 //  TODO better icon / logo
 
@@ -28,6 +28,7 @@ void setup() {
 	size(700, 350);
   surface.setResizable(true);
   surface.setTitle("LED Controller");
+
 	setIcon();
 	minim = new Minim(this);
 	getMixer();
@@ -90,7 +91,7 @@ void draw() {
 	background(bgColor);
 
 	image(icon, 0, 0);
-  drawRightMenuBar();
+  	drawRightMenuBar();
 	cbSynced.update();
 	cbRandom.update();
 	cbColorSync.update();
@@ -160,11 +161,6 @@ void draw() {
 		sendToArd(selectedColor);
 		c = selectedColor;
 	}
-
-  if(!settings.open){      
-    fill(selectedColor);
-    ellipse(200, 250, 50, 50);
-  }
 
 	if (debugMouse) {
 		text(mouseX + ", " + mouseY, mouseX + 5, mouseY - 5);
