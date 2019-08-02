@@ -4,10 +4,13 @@ Slider vBrightnessSlider; // VERTICAL SLIDER
 Picker picker;
 Settings settings;
 PImage settingsIcon;
-// IDEA try some color as bg or the user could set the color in the settings, but just a BIT color like a black with a tint of blue or red
 
-//	FIXME you can't change the brightness 
-//	FIXME the app stops responding, give the option to select the com port 
+//	TopPriority !! FIX THE FUCKING SLIDER CLASS
+
+//  IDEA try some color as bg or the user could set the color in the settings, but just a BIT color like a black with a tint of blue or red
+
+//	FIXME you can't change the brightness
+//	FIXME the app stops responding, give the option to select the com port
 
 // TODO CREATE A NEW CLASS FOR VERTICAL SLIDERS
 

@@ -60,8 +60,9 @@ class Slider {
 
 			fill(dotColor);
 			rect(posX-0.5 * dotWidth, y - 0.5 * dotHeight, dotWidth, dotHeight);
-		}else{
-			line(330, 50, 330, 320);
+		} else {
+			line(x, y, x, sWidth);
+
 			//println(this.id + " Error_Message: I HAVE NO IDEA HOW TO DRAW THIS");
 		}
 	}
