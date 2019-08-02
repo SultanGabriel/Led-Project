@@ -79,7 +79,7 @@ public void setup() {
 	brightnessSlider.id = "Brightness";
 	brightnessSlider.dotColor = color(255);
 
-	vBrightnessSlider = new Slider(330, 80, 300, 0, 100, 80);
+	vBrightnessSlider = new Slider(330, 80, 280, 0, 100, 80);
 	vBrightnessSlider.id = "Vertical Brightness Slider";
 	vBrightnessSlider.vertical = true;
 
