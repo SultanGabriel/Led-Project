@@ -30,7 +30,6 @@ class Settings {//TODO ADD MORE OPTIONS
 		line(width - 40, 20, width - 10, 20);
 		line(width - 40, 30, width - 10, 30);
 		//image(settingsIcon, width - 30, 5);
-
 	}
 
 	void update(){
