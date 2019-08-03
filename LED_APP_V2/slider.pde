@@ -1,4 +1,4 @@
-class Slider {	//TODO rewrite or rethink the Slider class! //TODO be able to click on the slider and have it move to the mouse position
+class Slider {  //TODO rewrite or rethink the Slider class! //TODO be able to click on the slider and have it move to the mouse position
 	float x;
 	float y;
 	float sWidth;

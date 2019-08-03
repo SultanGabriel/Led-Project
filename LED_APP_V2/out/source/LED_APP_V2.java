@@ -27,8 +27,8 @@ Settings settings;
 // IDEA turn it into OR made a dark mode
 // IDEA try some color as bg or the user could set the color in the settings, but just a BIT color like a black with a tint of blue or red
 
-//	FIXME you can't change the brightness 
-//	FIXME the app stops responding, give the option to select the com port 
+//	FIXME you can't change the brightness
+//	FIXME the app stops responding, give the option to select the com port
 
 // TODO CREATE A NEW CLASS FOR VERTICAL SLIDERS
 
@@ -46,9 +46,14 @@ Settings settings;
 
 public void setup() {
 	
+<<<<<<< HEAD
   surface.setResizable(true);
   surface.setTitle("LED Controller");
 
+=======
+	surface.setResizable(true);
+	surface.setTitle("LED Controller");
+>>>>>>> dab426a7eab94b71d5013fd9b50522466f211910
 	setIcon();
 	minim = new Minim(this);
 	getMixer();
@@ -111,7 +116,7 @@ public void draw() {
 	background(bgColor);
 
 	image(icon, 0, 0);
-  	drawRightMenuBar();
+	drawRightMenuBar();
 	cbSynced.update();
 	cbRandom.update();
 	cbColorSync.update();
@@ -126,10 +131,8 @@ public void draw() {
 		cbFadeToRandom.show();
 	}
 
-
-	//TODO the random and hue checkboxes should not be able to be checked
-	//				 at the same time
-
+	//TODO the random and hue checkboxes should not be able to be checked at the same time
+		
 	randomSync = cbRandom.checked;
 	musicSinced = cbSynced.checked;
 	colorSync = cbColorSync.checked;
@@ -191,11 +194,11 @@ public void draw() {
 }
 
 public void drawRightMenuBar(){
-  noStroke();
-  fill(sidebarColor);
-  rect(400, 0, 300, height);
-  fill(topbarColor);
-  rect(400, 0, 300, 30);
+	noStroke();
+	fill(sidebarColor);
+	rect(400, 0, 300, height);
+	fill(topbarColor);
+	rect(400, 0, 300, 40);
 }
 
 public void HSB(){
@@ -326,8 +329,8 @@ class Picker {
 			stroke(h, 100, 100);
 			arc(x, y, radius, radius, i, i + increment);
 		}
-		cx = round((radius) / 2 * cos(radians(currentHue)) + x);
-		cy = round((radius) / 2 * sin(radians(currentHue)) + y);
+		cx = round(( radius ) / 2 * cos(radians(currentHue)) + x);
+		cy = round(( radius ) / 2 * sin(radians(currentHue)) + y);
 
 		stroke(0);
 		strokeWeight(5);
@@ -391,17 +394,16 @@ boolean colorSync = false;
 boolean fade = false;
 boolean fadetorandom = false;
 //arduino settings
-boolean outputEnable = false;
+boolean outputEnable = true;
 int baudrate = 250000;
 String COM = "COM5";
 //debug !
 boolean debug = false;
 boolean debugMouse = true;
 //app colors
-int bgColor = color(200);
-int sidebarColor = color(170);
-int topbarColor = color(150);
-int overButtonColor = color(120);
+int bgColor = color(144, 178, 178);
+int sidebarColor = color(0, 50);
+int topbarColor = color(0, 50);
 //soundmultiplier
 int soundMultiplier = 19;
 //default Color ; the color the app starts with
@@ -430,23 +432,20 @@ public void connectToArd() {
 	if (debug)
 		printArray(Serial.list());
 	if(outputEnable)
-  	ard = new Serial(this, COM, baudrate);
+		ard = new Serial(this, COM, baudrate);
 }
 
 public void sendToArd(int c) {
-  fill(c);
-  ellipse(200, 250, 50, 50);
-  
-  if(outputEnable){
-  	int r = ( c >> 16 ) & 0xFF;
-  	int g = ( c >> 8 ) & 0xFF;
-  	int b = c & 0xFF;
+	if(outputEnable) {
+		int r = ( c >> 16 ) & 0xFF;
+		int g = ( c >> 8 ) & 0xFF;
+		int b = c & 0xFF;
 
-  	ard.write('S');
-  	ard.write(r);
-  	ard.write(g);
-	  ard.write(b);
-  }
+		ard.write('S');
+		ard.write(r);
+		ard.write(g);
+		ard.write(b);
+	}
 }
 
 PImage icon;
@@ -625,15 +624,15 @@ class Settings {//TODO ADD MORE OPTIONS
 			//HSB();
 			noStroke();
 			//fill(hue(bgColor), saturation(bgColor), brightness(bgColor) - 20);
-			fill(overButtonColor);
+			fill(color(0,50));
 			rect(width - 30, 0, 30, 30);
 		}
-      stroke(0);
-      strokeWeight(3);
-			line(width - 25, 10, width - 5, 10);
-			line(width - 25, 15, width - 5, 15);
-			line(width - 25, 20, width - 5, 20);
-      //image(settingsIcon, width - 30, 5);
+		stroke(0);
+		strokeWeight(3);
+		line(width - 40, 10, width - 10, 10);
+		line(width - 40, 20, width - 10, 20);
+		line(width - 40, 30, width - 10, 30);
+		//image(settingsIcon, width - 30, 5);
 
 	}
 
@@ -654,14 +653,14 @@ class Settings {//TODO ADD MORE OPTIONS
 		text("Developer Options", 200, 30);
 		debugCb.update();
 		debugMouseCb.update();
-    debugCb.show();
-    debugMouseCb.show();
+		debugCb.show();
+		debugMouseCb.show();
 	}
 }
 //	TODO add more tabs and ability to have more tabs
 //	TODO add a type of dropdown menu or somethings to select the COM port
 //	TODO Add a soundmultiplier option
-class Slider {	//TODO rewrite or rethink the Slider class! //TODO be able to click on the slider and have it move to the mouse position
+class Slider {  //TODO rewrite or rethink the Slider class! //TODO be able to click on the slider and have it move to the mouse position
 	float x;
 	float y;
 	float sWidth;
@@ -736,7 +735,7 @@ class Slider {	//TODO rewrite or rethink the Slider class! //TODO be able to cli
 		       ( mouseY >= y - dotHeight * 0.5f ) && ( mouseY <= y + dotHeight * 0.5f );
 	}
 }
-  public void settings() { 	size(700, 350); }
+  public void settings() { 	size(700, 400); }
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "LED_APP_V2" };
     if (passedArgs != null) {
