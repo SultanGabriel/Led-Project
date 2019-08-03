@@ -15,7 +15,7 @@ color bgColor = color(144, 178, 178);
 color sidebarColor = color(0, 50);
 color topbarColor = color(0, 50);
 //soundmultiplier
-int soundMultiplier = 19;
+int soundMultiplier = 20;
 //default Color ; the color the app starts with
 color defaultColor = color(255, 0, 0);
 //icons

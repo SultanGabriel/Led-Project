@@ -45,11 +45,20 @@ void getMixer() {
 }
 
 void mousePressed() {
-	for (Slider s : sliders)
-	{
-		if (s.isOver())
-			s.lock = true;
+	// for (Slider s : sliders)
+	// {
+	// 	if (s.isOver())
+	// 		s.lock = true;
+	// }
+
+	if(fadeSpeedSlider.isOver()){
+		fadeSpeedSlider.lock = true;
 	}
+
+	if(brightnessSlider.isOver()){
+		brightnessSlider.lock = true;
+	}
+
 	float d = dist(picker.x, picker.y, mouseX, mouseY);
 
 	if(91 <  d && d < 119) {         // 90 - 110
@@ -63,18 +72,10 @@ void mousePressed() {
 }
 
 void mouseReleased() {
-	for (Slider s : sliders)
-	{
-		s.lock = false;
-	}
-}
-void mouseMooved(){
-
-
-}
-void mouseWheel(MouseEvent event) {
-	float e = event.getCount();
-//  println(e);
-//  picker.currentHue += e;
-//  picker.update();
+	// for (Slider s : sliders)
+	// {
+	// 	s.lock = false;
+	// }
+	fadeSpeedSlider.lock = false;
+	brightnessSlider.lock = false;
 }

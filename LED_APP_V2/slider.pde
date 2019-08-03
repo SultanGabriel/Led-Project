@@ -1,4 +1,6 @@
-class Slider {  //TODO rewrite or rethink the Slider class! //TODO be able to click on the slider and have it move to the mouse position
+class Slider {
+	//TODO rewrite or rethink the Slider class!
+	//TODO be able to click on the slider and have it move to the mouse position
 	float x;
 	float y;
 	float sWidth;
@@ -14,6 +16,8 @@ class Slider {  //TODO rewrite or rethink the Slider class! //TODO be able to cl
 
 	color sliderColor = color(0);
 	color dotColor = color(0);
+
+	boolean vertical = false;
 
 	String id;
 	//default
@@ -50,11 +54,17 @@ class Slider {  //TODO rewrite or rethink the Slider class! //TODO be able to cl
 	}
 
 	void show() {
-		fill(sliderColor);
-		rect(x, y, sWidth, 4);
+		if(!vertical) {
+			fill(sliderColor);
+			rect(x, y, sWidth, 4);
 
-		fill(dotColor);
-		rect(posX-0.5 * dotWidth, y - 0.5 * dotHeight, dotWidth, dotHeight);
+			fill(dotColor);
+			rect(posX-0.5 * dotWidth, y - 0.5 * dotHeight, dotWidth, dotHeight);
+		} else {
+			line(x, y, x, sWidth);
+
+			//println(this.id + " Error_Message: I HAVE NO IDEA HOW TO DRAW THIS");
+		}
 	}
 
 	void update() {
