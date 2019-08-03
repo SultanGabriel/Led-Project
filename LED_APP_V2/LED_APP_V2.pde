@@ -4,7 +4,7 @@ Picker picker;
 
 PImage settingsIcon;
 Settings settings;
-
+// IDEA turn it into OR made a dark mode
 // IDEA try some color as bg or the user could set the color in the settings, but just a BIT color like a black with a tint of blue or red
 
 //	FIXME you can't change the brightness
@@ -15,7 +15,7 @@ Settings settings;
 //	WIP REDESIGN THE APP
 //	WIP settings tab
 //  TODO make the config a cfg or json
-
+//  TODO add more settings!!
 //  TODO better background
 //  TODO better icon / logo
 
@@ -119,6 +119,7 @@ void draw() {
 		settings.show();
 	} else if(!fade && !colorSync && !fadetorandom) {
 		picker.drawPicker();
+
 		//sliders[5].update();
 	} else if(colorSync) {
 		sliders[5].update();
@@ -157,9 +158,6 @@ void draw() {
 		sendToArd(selectedColor);
 		c = selectedColor;
 	}
-
-	//colorWheel(125);
-	//colorSquare();
 
 	if (debugMouse) {
 		text(mouseX + ", " + mouseY, mouseX + 5, mouseY - 5);

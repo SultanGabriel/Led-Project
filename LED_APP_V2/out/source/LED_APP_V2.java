@@ -24,18 +24,18 @@ Picker picker;
 
 PImage settingsIcon;
 Settings settings;
-
+// IDEA turn it into OR made a dark mode
 // IDEA try some color as bg or the user could set the color in the settings, but just a BIT color like a black with a tint of blue or red
 
-//	FIXME you can't change the brightness 
-//	FIXME the app stops responding, give the option to select the com port 
+//	FIXME you can't change the brightness
+//	FIXME the app stops responding, give the option to select the com port
 
 // TODO CREATE A NEW CLASS FOR VERTICAL SLIDERS
 
 //	WIP REDESIGN THE APP
 //	WIP settings tab
 //  TODO make the config a cfg or json
-
+//  TODO add more settings!!
 //  TODO better background
 //  TODO better icon / logo
 
@@ -46,8 +46,8 @@ Settings settings;
 
 public void setup() {
 	
-  surface.setResizable(true);
-  surface.setTitle("LED Controller");
+	surface.setResizable(true);
+	surface.setTitle("LED Controller");
 	setIcon();
 	minim = new Minim(this);
 	getMixer();
@@ -110,7 +110,7 @@ public void draw() {
 	background(bgColor);
 
 	image(icon, 0, 0);
-  drawRightMenuBar();
+	drawRightMenuBar();
 	cbSynced.update();
 	cbRandom.update();
 	cbColorSync.update();
@@ -125,10 +125,8 @@ public void draw() {
 		cbFadeToRandom.show();
 	}
 
-
-	//TODO the random and hue checkboxes should not be able to be checked
-	//				 at the same time
-
+	//TODO the random and hue checkboxes should not be able to be checked at the same time
+		
 	randomSync = cbRandom.checked;
 	musicSinced = cbSynced.checked;
 	colorSync = cbColorSync.checked;
@@ -141,6 +139,7 @@ public void draw() {
 		settings.show();
 	} else if(!fade && !colorSync && !fadetorandom) {
 		picker.drawPicker();
+
 		//sliders[5].update();
 	} else if(colorSync) {
 		sliders[5].update();
@@ -180,9 +179,6 @@ public void draw() {
 		c = selectedColor;
 	}
 
-	//colorWheel(125);
-	//colorSquare();
-
 	if (debugMouse) {
 		text(mouseX + ", " + mouseY, mouseX + 5, mouseY - 5);
 		stroke(255, 0, 0);
@@ -192,11 +188,11 @@ public void draw() {
 }
 
 public void drawRightMenuBar(){
-  noStroke();
-  fill(sidebarColor);
-  rect(400, 0, 300, height);
-  fill(topbarColor);
-  rect(400, 0, 300, 40);
+	noStroke();
+	fill(sidebarColor);
+	rect(400, 0, 300, height);
+	fill(topbarColor);
+	rect(400, 0, 300, 40);
 }
 
 public void HSB(){
@@ -327,8 +323,8 @@ class Picker {
 			stroke(h, 100, 100);
 			arc(x, y, radius, radius, i, i + increment);
 		}
-		cx = round((radius) / 2 * cos(radians(currentHue)) + x);
-		cy = round((radius) / 2 * sin(radians(currentHue)) + y);
+		cx = round(( radius ) / 2 * cos(radians(currentHue)) + x);
+		cy = round(( radius ) / 2 * sin(radians(currentHue)) + y);
 
 		stroke(0);
 		strokeWeight(5);
@@ -429,21 +425,21 @@ Minim minim;
 public void connectToArd() {
 	if (debug)
 		printArray(Serial.list());
-  if(outputEnable)
-  	ard = new Serial(this, COM, baudrate);
+	if(outputEnable)
+		ard = new Serial(this, COM, baudrate);
 }
 
 public void sendToArd(int c) {
-  if(outputEnable){
-  	int r = ( c >> 16 ) & 0xFF;
-  	int g = ( c >> 8 ) & 0xFF;
-  	int b = c & 0xFF;
+	if(outputEnable) {
+		int r = ( c >> 16 ) & 0xFF;
+		int g = ( c >> 8 ) & 0xFF;
+		int b = c & 0xFF;
 
-  	ard.write('S');
-  	ard.write(r);
-  	ard.write(g);
-	  ard.write(b);
-  }
+		ard.write('S');
+		ard.write(r);
+		ard.write(g);
+		ard.write(b);
+	}
 }
 
 PImage icon;
@@ -454,6 +450,7 @@ public void setIcon(){
 
 public void getMixer() {
 	Mixer.Info[] mixerInfo = AudioSystem.getMixerInfo();
+  println(mixerInfo);
 	for (Mixer.Info m : mixerInfo) {
 		String name = m.getName();
 		if (name.contains("Stereomix")) {
@@ -621,15 +618,15 @@ class Settings {//TODO ADD MORE OPTIONS
 			//HSB();
 			noStroke();
 			//fill(hue(bgColor), saturation(bgColor), brightness(bgColor) - 20);
-			fill(red(bgColor) - 50);
-			rect(buttonX, buttonY, 25, 25);
+			fill(color(0,50));
+			rect(width - 30, 0, 30, 30);
 		}
-      stroke(0);
-      strokeWeight(3);
-			line(width - 40, 10, width - 10, 10);
-			line(width - 40, 20, width - 10, 20);
-			line(width - 40, 30, width - 10, 30);
-      //image(settingsIcon, width - 30, 5);
+		stroke(0);
+		strokeWeight(3);
+		line(width - 40, 10, width - 10, 10);
+		line(width - 40, 20, width - 10, 20);
+		line(width - 40, 30, width - 10, 30);
+		//image(settingsIcon, width - 30, 5);
 
 	}
 
@@ -650,14 +647,14 @@ class Settings {//TODO ADD MORE OPTIONS
 		text("Developer Options", 200, 30);
 		debugCb.update();
 		debugMouseCb.update();
-    debugCb.show();
-    debugMouseCb.show();
+		debugCb.show();
+		debugMouseCb.show();
 	}
 }
 //	TODO add more tabs and ability to have more tabs
 //	TODO add a type of dropdown menu or somethings to select the COM port
 //	TODO Add a soundmultiplier option
-class Slider {	//TODO rewrite or rethink the Slider class! //TODO be able to click on the slider and have it move to the mouse position
+class Slider {  //TODO rewrite or rethink the Slider class! //TODO be able to click on the slider and have it move to the mouse position
 	float x;
 	float y;
 	float sWidth;

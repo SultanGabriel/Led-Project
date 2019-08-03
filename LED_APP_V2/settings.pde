@@ -21,8 +21,8 @@ class Settings {//TODO ADD MORE OPTIONS
 			//HSB();
 			noStroke();
 			//fill(hue(bgColor), saturation(bgColor), brightness(bgColor) - 20);
-			fill(red(bgColor) - 50);
-			rect(buttonX, buttonY, 25, 25);
+			fill(color(0,50));
+			rect(width - 30, 0, 30, 30);
 		}
 		stroke(0);
 		strokeWeight(3);

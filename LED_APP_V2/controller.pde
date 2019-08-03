@@ -34,6 +34,7 @@ void setIcon(){
 
 void getMixer() {
 	Mixer.Info[] mixerInfo = AudioSystem.getMixerInfo();
+  println(mixerInfo);
 	for (Mixer.Info m : mixerInfo) {
 		String name = m.getName();
 		if (name.contains("Stereomix")) {
