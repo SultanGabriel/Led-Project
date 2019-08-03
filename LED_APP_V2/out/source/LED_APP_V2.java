@@ -46,8 +46,14 @@ Settings settings;
 
 public void setup() {
 	
+<<<<<<< HEAD
+  surface.setResizable(true);
+  surface.setTitle("LED Controller");
+
+=======
 	surface.setResizable(true);
 	surface.setTitle("LED Controller");
+>>>>>>> dab426a7eab94b71d5013fd9b50522466f211910
 	setIcon();
 	minim = new Minim(this);
 	getMixer();
