@@ -25,22 +25,29 @@ Picker picker;
 PImage settingsIcon;
 Settings settings;
 
+// IDEA try some color as bg or the user could set the color in the settings, but just a BIT color like a black with a tint of blue or red
+
+//	FIXME you can't change the brightness 
+//	FIXME the app stops responding, give the option to select the com port 
+
+// TODO CREATE A NEW CLASS FOR VERTICAL SLIDERS
+
 //	WIP REDESIGN THE APP
 //	WIP settings tab
 //  TODO make the config a cfg or json
 
 //  TODO better background
-//  TODO Add a way to turn the brightness down
 //  TODO better icon / logo
 
-//      TODO add profiles tab
+//  TODO add profiles tab
 //  TODO ADD PROFILES
 
 //  TODO Be able to add custom modes
 
 public void setup() {
-
 	
+  surface.setResizable(true);
+  surface.setTitle("LED Controller");
 	setIcon();
 	minim = new Minim(this);
 	getMixer();
@@ -91,7 +98,7 @@ public void setup() {
 	cbFade = new Checkbox(225, 20, "Fade");
 	cbFadeToRandom = new Checkbox(225, 40, "Fade to Random");
 
-	picker = new Picker(200, 200, 200);
+	picker = new Picker(550, 210, 200);
 	picker.currentColor = defaultColor;
 }
 
@@ -103,7 +110,7 @@ public void draw() {
 	background(bgColor);
 
 	image(icon, 0, 0);
-
+  drawRightMenuBar();
 	cbSynced.update();
 	cbRandom.update();
 	cbColorSync.update();
@@ -182,6 +189,14 @@ public void draw() {
 		line(mouseX, 0, mouseX, height);
 		line(0, mouseY, width, mouseY);
 	}
+}
+
+public void drawRightMenuBar(){
+  noStroke();
+  fill(sidebarColor);
+  rect(400, 0, 300, height);
+  fill(topbarColor);
+  rect(400, 0, 300, 40);
 }
 
 public void HSB(){
@@ -377,19 +392,22 @@ boolean colorSync = false;
 boolean fade = false;
 boolean fadetorandom = false;
 //arduino settings
+boolean outputEnable = true;
 int baudrate = 250000;
 String COM = "COM5";
 //debug !
 boolean debug = false;
-boolean debugMouse = false;
-//app settings
-int bgColor = color(200);
+boolean debugMouse = true;
+//app colors
+int bgColor = color(144, 178, 178);
+int sidebarColor = color(0, 50);
+int topbarColor = color(0, 50);
 //soundmultiplier
 int soundMultiplier = 19;
 //default Color ; the color the app starts with
 int defaultColor = color(255, 0, 0);
 //icons
-String settingsIconPATH = "./Resources/settings.png";
+String settingsIconPATH = "./resources/settings.png";
 String iconPATH = "./resources/icon.png";
 //
 int black = color(0);
@@ -411,20 +429,23 @@ Minim minim;
 public void connectToArd() {
 	if (debug)
 		printArray(Serial.list());
-
-	ard = new Serial(this, COM, baudrate);
+  if(outputEnable)
+  	ard = new Serial(this, COM, baudrate);
 }
 
 public void sendToArd(int c) {
-	int r = ( c >> 16 ) & 0xFF;
-	int g = ( c >> 8 ) & 0xFF;
-	int b = c & 0xFF;
+  if(outputEnable){
+  	int r = ( c >> 16 ) & 0xFF;
+  	int g = ( c >> 8 ) & 0xFF;
+  	int b = c & 0xFF;
 
-	ard.write('S');
-	ard.write(r);
-	ard.write(g);
-	ard.write(b);
+  	ard.write('S');
+  	ard.write(r);
+  	ard.write(g);
+	  ard.write(b);
+  }
 }
+
 PImage icon;
 public void setIcon(){
 	icon = loadImage(iconPATH);
@@ -467,7 +488,6 @@ public void mouseReleased() {
 	}
 }
 public void mouseMooved(){
-
 
 
 }
@@ -557,7 +577,7 @@ public int fade(float speed, float b) {
 int randomColor;
 
 public int fadeToRandom(int c, float increment, float brightness){ //WIP write the fadeToRandom mode
-	HSB();
+	HSB(); //FIXME This isn't working right =////
 	if (randomColor == 0 || floor(hue(c)) == floor(hue(randomColor))) {
 		int rnd = round(random(360));
 		println(rnd);
@@ -604,27 +624,25 @@ class Settings {//TODO ADD MORE OPTIONS
 			fill(red(bgColor) - 50);
 			rect(buttonX, buttonY, 25, 25);
 		}
-		if(!open) {
-			image(settingsIcon, width - 30, 5);
-		} else {
-			stroke(0);
-			strokeWeight(2);
-			line(370, 5, 395, 30);
-			line(395, 5, 370, 30);
-		}
+      stroke(0);
+      strokeWeight(3);
+			line(width - 40, 10, width - 10, 10);
+			line(width - 40, 20, width - 10, 20);
+			line(width - 40, 30, width - 10, 30);
+      //image(settingsIcon, width - 30, 5);
+
 	}
 
 	public void update(){
 		debug = debugCb.checked;
 		debugMouse = debugMouseCb.checked;
 
-		if(mouseX > 370 && mouseY < 30) {
+		if(mouseX > width - 40 && mouseY < 40) {
 			settings.mouseOver = true;
 		} else {
 			mouseOver = false;
 		}
 	}
-	// TODO add more tabs and ability to have more tabs
 	public void show(){
 		textAlign(CENTER, BOTTOM);
 		textSize(20);
@@ -632,8 +650,13 @@ class Settings {//TODO ADD MORE OPTIONS
 		text("Developer Options", 200, 30);
 		debugCb.update();
 		debugMouseCb.update();
+    debugCb.show();
+    debugMouseCb.show();
 	}
 }
+//	TODO add more tabs and ability to have more tabs
+//	TODO add a type of dropdown menu or somethings to select the COM port
+//	TODO Add a soundmultiplier option
 class Slider {	//TODO rewrite or rethink the Slider class! //TODO be able to click on the slider and have it move to the mouse position
 	float x;
 	float y;
@@ -709,7 +732,7 @@ class Slider {	//TODO rewrite or rethink the Slider class! //TODO be able to cli
 		       ( mouseY >= y - dotHeight * 0.5f ) && ( mouseY <= y + dotHeight * 0.5f );
 	}
 }
-  public void settings() { 	size(400, 350); }
+  public void settings() { 	size(700, 400); }
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "LED_APP_V2" };
     if (passedArgs != null) {

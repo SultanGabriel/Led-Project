@@ -24,12 +24,12 @@ class Settings {//TODO ADD MORE OPTIONS
 			fill(red(bgColor) - 50);
 			rect(buttonX, buttonY, 25, 25);
 		}
-      stroke(0);
-      strokeWeight(3);
-			line(width - 40, 10, width - 10, 10);
-			line(width - 40, 20, width - 10, 20);
-			line(width - 40, 30, width - 10, 30);
-      //image(settingsIcon, width - 30, 5);
+		stroke(0);
+		strokeWeight(3);
+		line(width - 40, 10, width - 10, 10);
+		line(width - 40, 20, width - 10, 20);
+		line(width - 40, 30, width - 10, 30);
+		//image(settingsIcon, width - 30, 5);
 
 	}
 
@@ -50,8 +50,8 @@ class Settings {//TODO ADD MORE OPTIONS
 		text("Developer Options", 200, 30);
 		debugCb.update();
 		debugMouseCb.update();
-    debugCb.show();
-    debugMouseCb.show();
+		debugCb.show();
+		debugMouseCb.show();
 	}
 }
 //	TODO add more tabs and ability to have more tabs

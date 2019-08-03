@@ -39,8 +39,8 @@ class Picker {
 			stroke(h, 100, 100);
 			arc(x, y, radius, radius, i, i + increment);
 		}
-		cx = round((radius) / 2 * cos(radians(currentHue)) + x);
-		cy = round((radius) / 2 * sin(radians(currentHue)) + y);
+		cx = round(( radius ) / 2 * cos(radians(currentHue)) + x);
+		cy = round(( radius ) / 2 * sin(radians(currentHue)) + y);
 
 		stroke(0);
 		strokeWeight(5);

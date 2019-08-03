@@ -7,8 +7,8 @@ Settings settings;
 
 // IDEA try some color as bg or the user could set the color in the settings, but just a BIT color like a black with a tint of blue or red
 
-//	FIXME you can't change the brightness 
-//	FIXME the app stops responding, give the option to select the com port 
+//	FIXME you can't change the brightness
+//	FIXME the app stops responding, give the option to select the com port
 
 // TODO CREATE A NEW CLASS FOR VERTICAL SLIDERS
 
@@ -26,8 +26,8 @@ Settings settings;
 
 void setup() {
 	size(700, 400);
-  surface.setResizable(true);
-  surface.setTitle("LED Controller");
+	surface.setResizable(true);
+	surface.setTitle("LED Controller");
 	setIcon();
 	minim = new Minim(this);
 	getMixer();
@@ -90,7 +90,7 @@ void draw() {
 	background(bgColor);
 
 	image(icon, 0, 0);
-  drawRightMenuBar();
+	drawRightMenuBar();
 	cbSynced.update();
 	cbRandom.update();
 	cbColorSync.update();
@@ -105,10 +105,8 @@ void draw() {
 		cbFadeToRandom.show();
 	}
 
-
-	//TODO the random and hue checkboxes should not be able to be checked
-	//				 at the same time
-
+	//TODO the random and hue checkboxes should not be able to be checked at the same time
+		
 	randomSync = cbRandom.checked;
 	musicSinced = cbSynced.checked;
 	colorSync = cbColorSync.checked;
@@ -172,11 +170,11 @@ void draw() {
 }
 
 void drawRightMenuBar(){
-  noStroke();
-  fill(sidebarColor);
-  rect(400, 0, 300, height);
-  fill(topbarColor);
-  rect(400, 0, 300, 40);
+	noStroke();
+	fill(sidebarColor);
+	rect(400, 0, 300, height);
+	fill(topbarColor);
+	rect(400, 0, 300, 40);
 }
 
 void HSB(){

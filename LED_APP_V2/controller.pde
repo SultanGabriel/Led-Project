@@ -9,21 +9,21 @@ Minim minim;
 void connectToArd() {
 	if (debug)
 		printArray(Serial.list());
-  if(outputEnable)
-  	ard = new Serial(this, COM, baudrate);
+	if(outputEnable)
+		ard = new Serial(this, COM, baudrate);
 }
 
 void sendToArd(color c) {
-  if(outputEnable){
-  	int r = ( c >> 16 ) & 0xFF;
-  	int g = ( c >> 8 ) & 0xFF;
-  	int b = c & 0xFF;
+	if(outputEnable) {
+		int r = ( c >> 16 ) & 0xFF;
+		int g = ( c >> 8 ) & 0xFF;
+		int b = c & 0xFF;
 
-  	ard.write('S');
-  	ard.write(r);
-  	ard.write(g);
-	  ard.write(b);
-  }
+		ard.write('S');
+		ard.write(r);
+		ard.write(g);
+		ard.write(b);
+	}
 }
 
 PImage icon;

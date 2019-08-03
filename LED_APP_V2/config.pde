@@ -4,16 +4,16 @@ boolean colorSync = false;
 boolean fade = false;
 boolean fadetorandom = false;
 //arduino settings
-boolean outputEnable = false;
+boolean outputEnable = true;
 int baudrate = 250000;
 String COM = "COM5";
 //debug !
 boolean debug = false;
 boolean debugMouse = true;
 //app colors
-color bgColor = color(200);
-color sidebarColor = color(170);
-color topbarColor = color(150);
+color bgColor = color(144, 178, 178);
+color sidebarColor = color(0, 50);
+color topbarColor = color(0, 50);
 //soundmultiplier
 int soundMultiplier = 19;
 //default Color ; the color the app starts with
