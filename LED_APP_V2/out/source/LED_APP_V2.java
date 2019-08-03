@@ -6,7 +6,6 @@ import processing.opengl.*;
 import processing.serial.*; 
 import ddf.minim.*; 
 import javax.sound.sampled.*; 
-import java.awt.Dimension; 
 
 import java.util.HashMap; 
 import java.util.ArrayList; 
@@ -49,7 +48,6 @@ public void setup() {
 	
   surface.setResizable(true);
   surface.setTitle("LED Controller");
-  frame.setMinimumSize(minimumWindowSize);
 
 	setIcon();
 	minim = new Minim(this);
@@ -424,8 +422,6 @@ int black = color(0);
 
 
 
-
-Dimension minimumWindowSize = new Dimension(700, 350); //Change values for limit
 Serial ard;
 AudioInput player;
 Minim minim;
