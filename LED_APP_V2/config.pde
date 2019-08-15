@@ -6,7 +6,7 @@ boolean fadetorandom = false;
 //arduino settings
 boolean outputEnable = true;
 int baudrate = 250000;
-String COM = "COM5";
+String COM = "COM3";
 //debug !
 boolean debug = false;
 boolean debugMouse = true;

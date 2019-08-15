@@ -35,8 +35,8 @@ void setup() {
 
 	icon.resize(50, 50);
 
-	settingsIcon = loadImage(settingsIconPATH);
-	settingsIcon.resize(25, 25);
+	//settingsIcon = loadImage(settingsIconPATH);
+	//settingsIcon.resize(25, 25);
 
 	settings = new Settings(width - 30, 5);
 	settings.setup();
