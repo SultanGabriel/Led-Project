@@ -5,7 +5,7 @@ boolean fade = false;
 //arduino settings
 boolean connectToArduino = false;
 int baudrate = 250000;
-String COM = "COM5";
+String COM = "COM3";
 //debug !?
 boolean debug = false;
 boolean debugMouse = false;

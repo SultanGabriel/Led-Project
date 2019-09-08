@@ -9,7 +9,7 @@ int baudrate = 250000;
 String COM = "COM3";
 //debug !
 boolean debug = false;
-boolean debugMouse = true;
+boolean debugMouse = false;
 //app colors
 color bgColor = color(144, 178, 178);
 color sidebarColor = color(0, 50);

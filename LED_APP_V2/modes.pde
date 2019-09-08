@@ -17,6 +17,7 @@ color musicColorSynced(float br){
 }
 
 color clr = color(random(255), random(255),  random(255));
+// RANDOM SYNC
 color musicRnd() {
 	int count = 0;
 	float soundIn;
