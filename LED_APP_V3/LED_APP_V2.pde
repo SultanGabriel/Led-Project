@@ -55,9 +55,9 @@ void setup() {
 	brightnessSlider.id = "Brightness";
 	brightnessSlider.dotColor = color(255);
 
-	vBrightnessSlider = new Slider(330, 80, 280, 0, 100, 80);
+	vBrightnessSlider = new Slider(50, 100, 300, 0, 100, 50);
 	vBrightnessSlider.id = "Vertical Brightness Slider";
-	vBrightnessSlider.vertical = true;
+	vBrightnessSlider.vertical = false;
 
 	//>>>>>>>>>>>>>>>Checkboxes<<<<<<<<<<<<<<<<<<
 
@@ -96,7 +96,7 @@ void draw() {
 	}
 
 	//TODO the random and hue checkboxes should not be able to be checked at the same time
-		
+
 	randomSync = cbRandom.checked;
 	musicSinced = cbSynced.checked;
 	//colorSync = cbColorSync.checked;
@@ -117,9 +117,9 @@ void draw() {
 		fadeSpeedSlider.update();
 		brightnessSlider.update();
 	}
-
+	HSB();
 	//sliderColor = color(sliders[0].value, sliders[1].value, sliders[2].value);
-	selectedColor = picker.currentColor;
+	selectedColor = color(hue(picker.currentColor), saturation(picker.currentColor), 100);//vBrightnessSlider.value
 	//TODO REWRITE THE MODE SELECTOR ( USE SWITCH )
 	if (musicSinced && !colorSync && !randomSync) {   //SYNC ONE COLOR
 		c = musicOneColor(selectedColor);
@@ -169,9 +169,3 @@ void drawRightMenuBar(){
 	rect(400, 0, 300, 40);
 }
 
-void HSB(){
-	colorMode(HSB, 360, 100, 100);
-}
-void RGB(){
-	colorMode(RGB, 255, 255, 255);
-}

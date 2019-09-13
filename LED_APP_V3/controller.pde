@@ -13,16 +13,18 @@ void connectToArd() {
 		ard = new Serial(this, COM, baudrate);
 }
 
-void sendToArd(color c) {
+void sendToArd(int c) {
 	if(outputEnable) {
+		println(c);
+
 		int r = ( c >> 16 ) & 0xFF;
 		int g = ( c >> 8 ) & 0xFF;
 		int b = c & 0xFF;
 
-		ard.write('S');
 		ard.write(r);
 		ard.write(g);
 		ard.write(b);
+		//ard.write(c);
 	}
 }
 
@@ -34,7 +36,7 @@ void setIcon(){
 
 void getMixer() {
 	Mixer.Info[] mixerInfo = AudioSystem.getMixerInfo();
-  println(mixerInfo);
+	//println(mixerInfo);
 	for (Mixer.Info m : mixerInfo) {
 		String name = m.getName();
 		if (name.contains("Stereomix")) {
@@ -51,12 +53,15 @@ void mousePressed() {
 	// 		s.lock = true;
 	// }
 
-	if(fadeSpeedSlider.isOver()){
+	if(fadeSpeedSlider.isOver()) {
 		fadeSpeedSlider.lock = true;
 	}
 
-	if(brightnessSlider.isOver()){
+	if(brightnessSlider.isOver()) {
 		brightnessSlider.lock = true;
+	}
+	if(vBrightnessSlider.isOver()) {
+		vBrightnessSlider.lock = true;
 	}
 
 	float d = dist(picker.x, picker.y, mouseX, mouseY);
@@ -78,4 +83,12 @@ void mouseReleased() {
 	// }
 	fadeSpeedSlider.lock = false;
 	brightnessSlider.lock = false;
+	vBrightnessSlider.lock = false;
+}
+
+void HSB(){
+	colorMode(HSB, 360, 100, 100);
+}
+void RGB(){
+	colorMode(RGB, 255, 255, 255);
 }

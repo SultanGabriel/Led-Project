@@ -17,13 +17,11 @@ void loop() {
   analogWrite(BLUE_PIN, b);
 
   if (Serial.available()) {
-    if (Serial.read() == 'S') {
       while (!Serial.available()) {}
       r = Serial.read();
       while (!Serial.available()) {}
       g = Serial.read();
       while (!Serial.available()) {}
       b = Serial.read();
-    }
   }
 }

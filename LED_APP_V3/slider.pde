@@ -55,14 +55,28 @@ class Slider {
 
 	void show() {
 		if(!vertical) {
-			fill(sliderColor);
-			rect(x, y, sWidth, 4);
+			//fill(sliderColor);
+			//rect(x, y, sWidth, 4);
 
 			fill(dotColor);
 			rect(posX-0.5 * dotWidth, y - 0.5 * dotHeight, dotWidth, dotHeight);
+			float increment = 100 / sWidth;
+			float b = 0;
+			HSB();
+			for(int i = 1; i <= sWidth; i++) {
+				stroke(selectedColor, 100, b);
+				line(x + i, y , x + i, y + 5);
+				b += increment;
+			}
 		} else {
-			line(x, y, x, sWidth);
-
+			float increment = 100 / sWidth;
+			float b = 0;
+			HSB();
+			for(int i = 1; i <= sWidth; i++) {
+				stroke(selectedColor, 100, b);
+				line(x, y + i, x + 10, y + i);
+				b += increment;
+			}
 			//println(this.id + " Error_Message: I HAVE NO IDEA HOW TO DRAW THIS");
 		}
 	}
