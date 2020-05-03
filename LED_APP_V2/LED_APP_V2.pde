@@ -5,7 +5,7 @@ Picker picker;
 Settings settings;
 // IDEA turn it into OR made a dark mode
 // IDEA try some color as bg or the user could set the color in the settings, but just a BIT color like a black with a tint of blue or red
-
+// REDESIGN shift the left bar to left and have everything there, now
 //	FIXME you can't change the brightness
 //	FIXME the app stops responding, give the option to select the com port
 
@@ -96,7 +96,7 @@ void draw() {
 	}
 
 	//TODO the random and hue checkboxes should not be able to be checked at the same time
-		
+
 	randomSync = cbRandom.checked;
 	musicSinced = cbSynced.checked;
 	//colorSync = cbColorSync.checked;

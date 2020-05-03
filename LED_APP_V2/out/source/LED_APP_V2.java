@@ -23,17 +23,9 @@ Slider fadeSpeedSlider, brightnessSlider;       //fadeBrightnessSlider
 Slider vBrightnessSlider; // VERTICAL SLIDER
 Picker picker;
 Settings settings;
-<<<<<<< HEAD
 // IDEA turn it into OR made a dark mode
 // IDEA try some color as bg or the user could set the color in the settings, but just a BIT color like a black with a tint of blue or red
-=======
-PImage settingsIcon;
-
-//	TopPriority !! FIX THE FUCKING SLIDER CLASS
-
-//  IDEA try some color as bg or the user could set the color in the settings, but just a BIT color like a black with a tint of blue or red
->>>>>>> master
-
+// REDESIGN shift the left bar to left and have everything there, now
 //	FIXME you can't change the brightness
 //	FIXME the app stops responding, give the option to select the com port
 
@@ -41,14 +33,8 @@ PImage settingsIcon;
 
 //	WIP REDESIGN THE APP
 //	WIP settings tab
-<<<<<<< HEAD
 //  TODO make the config a cfg or json
 //  TODO add more settings!!
-=======
-
-//  TODO make the config a cfg or json for settings
-
->>>>>>> master
 //  TODO better background
 //  TODO better icon / logo
 
@@ -57,21 +43,10 @@ PImage settingsIcon;
 
 // 	IDEA do I need the hue sync mode ?? it's kind of ugly
 
-<<<<<<< HEAD
-=======
-//  IDEA Be able to add custom modes
-
->>>>>>> master
 public void setup() {
 	
-<<<<<<< HEAD
-  surface.setResizable(true);
-  surface.setTitle("LED Controller");
-
-=======
 	surface.setResizable(true);
 	surface.setTitle("LED Controller");
->>>>>>> dab426a7eab94b71d5013fd9b50522466f211910
 	setIcon();
 	minim = new Minim(this);
 	getMixer();
@@ -80,8 +55,8 @@ public void setup() {
 
 	icon.resize(50, 50);
 
-	settingsIcon = loadImage(settingsIconPATH);
-	settingsIcon.resize(25, 25);
+	//settingsIcon = loadImage(settingsIconPATH);
+	//settingsIcon.resize(25, 25);
 
 	settings = new Settings(width - 30, 5);
 	settings.setup();
@@ -113,12 +88,7 @@ public void setup() {
 	cbFade = new Checkbox(225, 20, "Fade");
 	cbFadeToRandom = new Checkbox(225, 40, "Fade to Random");
 
-<<<<<<< HEAD
 	picker = new Picker(550, 210, 200);
-=======
-	picker = new Picker(180, 200, 200);
-
->>>>>>> master
 	picker.currentColor = defaultColor;
 }
 
@@ -145,15 +115,8 @@ public void draw() {
 		cbFadeToRandom.show();
 	}
 
-<<<<<<< HEAD
 	//TODO the random and hue checkboxes should not be able to be checked at the same time
-		
-=======
 
-	//TODO the random and hue checkboxes should not be able to be checked at the same time
-	//
-
->>>>>>> master
 	randomSync = cbRandom.checked;
 	musicSinced = cbSynced.checked;
 	//colorSync = cbColorSync.checked;
@@ -166,11 +129,7 @@ public void draw() {
 		settings.show();
 	} else if(!fade && !colorSync && !fadetorandom) {
 		picker.drawPicker();
-<<<<<<< HEAD
-
-=======
 		vBrightnessSlider.show();
->>>>>>> master
 		//sliders[5].update();
 		//} else if(colorSync) {
 		//	brightnessSlider.update();
@@ -425,12 +384,12 @@ boolean fadetorandom = false;
 //arduino settings
 boolean outputEnable = true;
 int baudrate = 250000;
-String COM = "COM5";
+String COM = "COM3";
 //debug !
 boolean debug = false;
-boolean debugMouse = true;
+boolean debugMouse = false;
 //app colors
-int bgColor = color(144, 178, 178);
+int bgColor = color(175, 175, 192);
 int sidebarColor = color(0, 50);
 int topbarColor = color(0, 50);
 //soundmultiplier
@@ -470,7 +429,7 @@ public void sendToArd(int c) {
 		int g = ( c >> 8 ) & 0xFF;
 		int b = c & 0xFF;
 
-		ard.write('S');
+		// ard.write('S');
 		ard.write(r);
 		ard.write(g);
 		ard.write(b);
@@ -485,7 +444,7 @@ public void setIcon(){
 
 public void getMixer() {
 	Mixer.Info[] mixerInfo = AudioSystem.getMixerInfo();
-  println(mixerInfo);
+	//println(mixerInfo);
 	for (Mixer.Info m : mixerInfo) {
 		String name = m.getName();
 		if (name.contains("Stereomix")) {
@@ -502,11 +461,11 @@ public void mousePressed() {
 	// 		s.lock = true;
 	// }
 
-	if(fadeSpeedSlider.isOver()){
+	if(fadeSpeedSlider.isOver()) {
 		fadeSpeedSlider.lock = true;
 	}
 
-	if(brightnessSlider.isOver()){
+	if(brightnessSlider.isOver()) {
 		brightnessSlider.lock = true;
 	}
 
@@ -523,29 +482,12 @@ public void mousePressed() {
 }
 
 public void mouseReleased() {
-<<<<<<< HEAD
-	for (Slider s : sliders)
-	{
-		s.lock = false;
-	}
-}
-public void mouseMooved(){
-
-
-}
-public void mouseWheel(MouseEvent event) {
-	float e = event.getCount();
-//  println(e);
-//  picker.currentHue += e;
-//  picker.update();
-=======
 	// for (Slider s : sliders)
 	// {
 	// 	s.lock = false;
 	// }
 	fadeSpeedSlider.lock = false;
 	brightnessSlider.lock = false;
->>>>>>> master
 }
 public int musicColorSynced(float br){
 	int count = 0;
@@ -577,9 +519,8 @@ public int musicRnd() {
 		lowTot+= ( soundIn * soundMultiplier );
 		count++;
 	}
-
 	colorMode(HSB, 360, 100, 100);
-	if(lowTot > 1000) {
+	if(lowTot > 400) {
 		clr = color(round(random(360)), 100, 100);
 	}
 
@@ -597,8 +538,8 @@ public int musicOneColor(int clr) {
 	int s, h, br;
 
 	for (int i = 0; i < player.left.size()/2.0f; i+=5) {
-		soundIn = abs(( player.left.get(i) + player.right.get(i))/2);
-		lowTot+= ( soundIn * soundMultiplier );
+		soundIn = abs((player.left.get(i) + player.right.get(i))/2);
+		lowTot+= (soundIn * soundMultiplier );
 		count++;
 	}
 
@@ -649,7 +590,7 @@ public int fadeToRandom(int c, float increment, float brightness){ //WIP write t
 	return color(h, 100, brightness);
 }
 class Settings { //TODO ADD MORE OPTIONS
-	int buttonX; 
+	int buttonX; //Add a music random color change threshold
 	int buttonY;
 	boolean mouseOver;
 	boolean open = false;
@@ -700,23 +641,15 @@ class Settings { //TODO ADD MORE OPTIONS
 		debugCb.update();
 		debugCb.show();
 		debugMouseCb.update();
-<<<<<<< HEAD
-		debugCb.show();
-=======
->>>>>>> master
 		debugMouseCb.show();
 	}
 }
 //	TODO add more tabs and ability to have more tabs
 //	TODO add a type of dropdown menu or somethings to select the COM port
 //	TODO Add a soundmultiplier option
-<<<<<<< HEAD
-class Slider {  //TODO rewrite or rethink the Slider class! //TODO be able to click on the slider and have it move to the mouse position
-=======
 class Slider {
 	//TODO rewrite or rethink the Slider class!
 	//TODO be able to click on the slider and have it move to the mouse position
->>>>>>> master
 	float x;
 	float y;
 	float sWidth;

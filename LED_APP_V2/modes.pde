@@ -28,9 +28,8 @@ color musicRnd() {
 		lowTot+= ( soundIn * soundMultiplier );
 		count++;
 	}
-
 	colorMode(HSB, 360, 100, 100);
-	if(lowTot > 1000) {
+	if(lowTot > 400) {
 		clr = color(round(random(360)), 100, 100);
 	}
 
@@ -48,8 +47,8 @@ color musicOneColor(color clr) {
 	int s, h, br;
 
 	for (int i = 0; i < player.left.size()/2.0; i+=5) {
-		soundIn = abs(( player.left.get(i) + player.right.get(i))/2);
-		lowTot+= ( soundIn * soundMultiplier );
+		soundIn = abs((player.left.get(i) + player.right.get(i))/2);
+		lowTot+= (soundIn * soundMultiplier );
 		count++;
 	}
 

@@ -19,7 +19,7 @@ void sendToArd(color c) {
 		int g = ( c >> 8 ) & 0xFF;
 		int b = c & 0xFF;
 
-		ard.write('S');
+		// ard.write('S');
 		ard.write(r);
 		ard.write(g);
 		ard.write(b);
@@ -34,7 +34,7 @@ void setIcon(){
 
 void getMixer() {
 	Mixer.Info[] mixerInfo = AudioSystem.getMixerInfo();
-  println(mixerInfo);
+	//println(mixerInfo);
 	for (Mixer.Info m : mixerInfo) {
 		String name = m.getName();
 		if (name.contains("Stereomix")) {
@@ -51,11 +51,11 @@ void mousePressed() {
 	// 		s.lock = true;
 	// }
 
-	if(fadeSpeedSlider.isOver()){
+	if(fadeSpeedSlider.isOver()) {
 		fadeSpeedSlider.lock = true;
 	}
 
-	if(brightnessSlider.isOver()){
+	if(brightnessSlider.isOver()) {
 		brightnessSlider.lock = true;
 	}
 

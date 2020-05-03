@@ -1,5 +1,5 @@
 class Settings { //TODO ADD MORE OPTIONS
-	int buttonX; 
+	int buttonX; //Add a music random color change threshold
 	int buttonY;
 	boolean mouseOver;
 	boolean open = false;
