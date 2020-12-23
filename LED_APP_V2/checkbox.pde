@@ -12,6 +12,9 @@ public class Checkbox { //TODO this needs some touching up!!
 	boolean gotCB = false;
 	boolean cbChecked = true;
 
+	boolean callback = false;
+	String callbackFunction = "";
+
 	Checkbox(int x_, int y_, String label_) {
 		x = x_;
 		y = y_;
@@ -76,6 +79,9 @@ public class Checkbox { //TODO this needs some touching up!!
 		if (mOver && mousePressed && ml + 100 < millis() ) {
 			checked = !checked;
 			ml = millis();
+			if(callback){
+				method(callbackFunction);
+			} //callback function
 		}
 	}
 }

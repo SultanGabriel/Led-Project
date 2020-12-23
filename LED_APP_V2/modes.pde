@@ -29,7 +29,7 @@ color musicRnd() {
 		count++;
 	}
 	colorMode(HSB, 360, 100, 100);
-	if(lowTot > 400) {
+	if(lowTot > rColorSwitchThr) {
 		clr = color(round(random(360)), 100, 100);
 	}
 

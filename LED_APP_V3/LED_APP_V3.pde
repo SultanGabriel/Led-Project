@@ -168,4 +168,3 @@ void drawRightMenuBar(){
 	fill(topbarColor);
 	rect(400, 0, 300, 40);
 }
-

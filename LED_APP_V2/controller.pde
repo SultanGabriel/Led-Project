@@ -13,13 +13,23 @@ void connectToArd() {
 		ard = new Serial(this, COM, baudrate);
 }
 
+void sendToArdSecColor(boolean secLights){
+	if(outputEnable) {
+		if(secLights){
+			ard.write('L');
+		}else{
+			ard.write('F');
+		}
+	}
+}
+
 void sendToArd(color c) {
 	if(outputEnable) {
 		int r = ( c >> 16 ) & 0xFF;
 		int g = ( c >> 8 ) & 0xFF;
 		int b = c & 0xFF;
 
-		// ard.write('S');
+		ard.write('S');
 		ard.write(r);
 		ard.write(g);
 		ard.write(b);
@@ -59,6 +69,11 @@ void mousePressed() {
 		brightnessSlider.lock = true;
 	}
 
+		if(thresholdSlider.isOver()) {
+		thresholdSlider.lock = true;
+	}
+
+
 	float d = dist(picker.x, picker.y, mouseX, mouseY);
 
 	if(91 <  d && d < 119) {         // 90 - 110
@@ -76,6 +91,8 @@ void mouseReleased() {
 	// {
 	// 	s.lock = false;
 	// }
+	
+	thresholdSlider.lock = false;
 	fadeSpeedSlider.lock = false;
 	brightnessSlider.lock = false;
 }

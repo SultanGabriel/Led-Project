@@ -1,4 +1,5 @@
-Checkbox cbSynced, cbRandom, cbColorSync, cbFade, cbFadeToRandom;
+Checkbox cbSynced, cbRandom, cbColorSync, cbFade, cbFadeToRandom, cbSecLights;
+Slider thresholdSlider;
 Slider fadeSpeedSlider, brightnessSlider;       //fadeBrightnessSlider
 Slider vBrightnessSlider; // VERTICAL SLIDER
 Picker picker;
@@ -46,6 +47,10 @@ void setup() {
 	// sliders[1].id = "Fade Brightness";
 	// sliders[1].dotColor = color(255);
 
+	//random color change threshold
+	thresholdSlider = new Slider(15, 370, 300, 100, 1000, 750);
+	thresholdSlider.id = "Random Color Change Threshold";
+
 	//fade speed
 	fadeSpeedSlider = new Slider(50, 150, 300, 0.01, 2, 0.5);
 	fadeSpeedSlider.id = "Fade Speed";
@@ -68,6 +73,13 @@ void setup() {
 	cbFade = new Checkbox(225, 20, "Fade");
 	cbFadeToRandom = new Checkbox(225, 40, "Fade to Random");
 
+	//Checkbox for secondary lights
+	cbSecLights = new Checkbox(75, 50, "Secondary Lights");
+	//set callback function
+	cbSecLights.callback = true;
+	cbSecLights.callbackFunction = "secLightsCallback";
+	
+	//picker
 	picker = new Picker(550, 210, 200);
 	picker.currentColor = defaultColor;
 }
@@ -87,12 +99,18 @@ void draw() {
 	cbFade.update();
 	cbFadeToRandom.update();
 
+	cbSecLights.update();
+	thresholdSlider.update();
+
 	if(!settings.open) {
 		cbSynced.show();
 		cbRandom.show();
 		//cbColorSync.show();
 		cbFade.show();
 		cbFadeToRandom.show();
+
+		cbSecLights.show();
+		thresholdSlider.show();
 	}
 
 	//TODO the random and hue checkboxes should not be able to be checked at the same time
@@ -102,6 +120,11 @@ void draw() {
 	//colorSync = cbColorSync.checked;
 	fade = cbFade.checked;
 	fadetorandom = cbFadeToRandom.checked;
+
+
+
+	rColorSwitchThr = thresholdSlider.value;
+
 	settings.update();
 	settings.drawButton();
 
@@ -120,7 +143,7 @@ void draw() {
 
 	//sliderColor = color(sliders[0].value, sliders[1].value, sliders[2].value);
 	selectedColor = picker.currentColor;
-	//TODO REWRITE THE MODE SELECTOR ( USE SWITCH )
+	// TODO REWRITE THE MODE SELECTOR ( USE SWITCH )
 	if (musicSinced && !colorSync && !randomSync) {   //SYNC ONE COLOR
 		c = musicOneColor(selectedColor);
 		sendToArd(c);
@@ -159,6 +182,12 @@ void draw() {
 
 	// 	slider for brightness position --
 	// <<	line(330, 80, 330, 320);	>>
+}
+
+void secLightsCallback(){
+	//SECONDARY LIGHTS STATUS
+	secondaryLights = cbSecLights.checked;
+	sendToArdSecColor(secondaryLights);
 }
 
 void drawRightMenuBar(){
