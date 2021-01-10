@@ -7,7 +7,7 @@ boolean fadetorandom = false;
 boolean secondaryLights = false;
 // boolean updateSecodaryLights = false;
 //arduino settings
-boolean outputEnable = true;
+boolean outputEnable = false;
 int baudrate = 500000;
 String COM = "COM3";
 //debug !

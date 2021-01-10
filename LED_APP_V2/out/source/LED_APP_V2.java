@@ -18,7 +18,8 @@ import java.io.IOException;
 
 public class LED_APP_V2 extends PApplet {
 
-Checkbox cbSynced, cbRandom, cbColorSync, cbFade, cbFadeToRandom;
+Checkbox cbSynced, cbRandom, cbColorSync, cbFade, cbFadeToRandom, cbSecLights;
+Slider thresholdSlider;
 Slider fadeSpeedSlider, brightnessSlider;       //fadeBrightnessSlider
 Slider vBrightnessSlider; // VERTICAL SLIDER
 Picker picker;
@@ -66,6 +67,10 @@ public void setup() {
 	// sliders[1].id = "Fade Brightness";
 	// sliders[1].dotColor = color(255);
 
+	//random color change threshold
+	thresholdSlider = new Slider(15, 370, 300, 100, 1000, 750);
+	thresholdSlider.id = "Random Color Change Threshold";
+
 	//fade speed
 	fadeSpeedSlider = new Slider(50, 150, 300, 0.01f, 2, 0.5f);
 	fadeSpeedSlider.id = "Fade Speed";
@@ -88,6 +93,13 @@ public void setup() {
 	cbFade = new Checkbox(225, 20, "Fade");
 	cbFadeToRandom = new Checkbox(225, 40, "Fade to Random");
 
+	//Checkbox for secondary lights
+	cbSecLights = new Checkbox(75, 50, "Secondary Lights");
+	//set callback function
+	cbSecLights.callback = true;
+	cbSecLights.callbackFunction = "secLightsCallback";
+	
+	//picker
 	picker = new Picker(550, 210, 200);
 	picker.currentColor = defaultColor;
 }
@@ -107,12 +119,18 @@ public void draw() {
 	cbFade.update();
 	cbFadeToRandom.update();
 
+	cbSecLights.update();
+	thresholdSlider.update();
+
 	if(!settings.open) {
 		cbSynced.show();
 		cbRandom.show();
 		//cbColorSync.show();
 		cbFade.show();
 		cbFadeToRandom.show();
+
+		cbSecLights.show();
+		thresholdSlider.show();
 	}
 
 	//TODO the random and hue checkboxes should not be able to be checked at the same time
@@ -122,6 +140,11 @@ public void draw() {
 	//colorSync = cbColorSync.checked;
 	fade = cbFade.checked;
 	fadetorandom = cbFadeToRandom.checked;
+
+
+
+	rColorSwitchThr = thresholdSlider.value;
+
 	settings.update();
 	settings.drawButton();
 
@@ -140,7 +163,7 @@ public void draw() {
 
 	//sliderColor = color(sliders[0].value, sliders[1].value, sliders[2].value);
 	selectedColor = picker.currentColor;
-	//TODO REWRITE THE MODE SELECTOR ( USE SWITCH )
+	// TODO REWRITE THE MODE SELECTOR ( USE SWITCH )
 	if (musicSinced && !colorSync && !randomSync) {   //SYNC ONE COLOR
 		c = musicOneColor(selectedColor);
 		sendToArd(c);
@@ -181,6 +204,12 @@ public void draw() {
 	// <<	line(330, 80, 330, 320);	>>
 }
 
+public void secLightsCallback(){
+	//SECONDARY LIGHTS STATUS
+	secondaryLights = cbSecLights.checked;
+	sendToArdSecColor(secondaryLights);
+}
+
 public void drawRightMenuBar(){
 	noStroke();
 	fill(sidebarColor);
@@ -208,6 +237,9 @@ public class Checkbox { //TODO this needs some touching up!!
 	Checkbox cb;
 	boolean gotCB = false;
 	boolean cbChecked = true;
+
+	boolean callback = false;
+	String callbackFunction = "";
 
 	Checkbox(int x_, int y_, String label_) {
 		x = x_;
@@ -273,6 +305,9 @@ public class Checkbox { //TODO this needs some touching up!!
 		if (mOver && mousePressed && ml + 100 < millis() ) {
 			checked = !checked;
 			ml = millis();
+			if(callback){
+				method(callbackFunction);
+			} //callback function
 		}
 	}
 }
@@ -381,9 +416,12 @@ boolean randomSync = false;
 boolean colorSync = false;
 boolean fade = false;
 boolean fadetorandom = false;
+
+boolean secondaryLights = false;
+// boolean updateSecodaryLights = false;
 //arduino settings
 boolean outputEnable = true;
-int baudrate = 250000;
+int baudrate = 500000;
 String COM = "COM3";
 //debug !
 boolean debug = false;
@@ -394,13 +432,18 @@ int sidebarColor = color(0, 50);
 int topbarColor = color(0, 50);
 //soundmultiplier
 int soundMultiplier = 20;
+//random color change threshold
+float rColorSwitchThr = 500;
+
 //default Color ; the color the app starts with
 int defaultColor = color(255, 0, 0);
 //icons
 String settingsIconPATH = "./resources/settings.png";
 String iconPATH = "./resources/icon.png";
+
 //
 int black = color(0);
+
 /*
    int r = (c >> 16) & 0xFF;
    int g = (c >> 8) & 0xFF;
@@ -423,13 +466,23 @@ public void connectToArd() {
 		ard = new Serial(this, COM, baudrate);
 }
 
+public void sendToArdSecColor(boolean secLights){
+	if(outputEnable) {
+		if(secLights){
+			ard.write('L');
+		}else{
+			ard.write('F');
+		}
+	}
+}
+
 public void sendToArd(int c) {
 	if(outputEnable) {
 		int r = ( c >> 16 ) & 0xFF;
 		int g = ( c >> 8 ) & 0xFF;
 		int b = c & 0xFF;
 
-		// ard.write('S');
+		ard.write('S');
 		ard.write(r);
 		ard.write(g);
 		ard.write(b);
@@ -469,6 +522,11 @@ public void mousePressed() {
 		brightnessSlider.lock = true;
 	}
 
+		if(thresholdSlider.isOver()) {
+		thresholdSlider.lock = true;
+	}
+
+
 	float d = dist(picker.x, picker.y, mouseX, mouseY);
 
 	if(91 <  d && d < 119) {         // 90 - 110
@@ -486,6 +544,8 @@ public void mouseReleased() {
 	// {
 	// 	s.lock = false;
 	// }
+	
+	thresholdSlider.lock = false;
 	fadeSpeedSlider.lock = false;
 	brightnessSlider.lock = false;
 }
@@ -520,7 +580,7 @@ public int musicRnd() {
 		count++;
 	}
 	colorMode(HSB, 360, 100, 100);
-	if(lowTot > 400) {
+	if(lowTot > rColorSwitchThr) {
 		clr = color(round(random(360)), 100, 100);
 	}
 

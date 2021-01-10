@@ -4,15 +4,13 @@ Slider fadeSpeedSlider, brightnessSlider;       //fadeBrightnessSlider
 Slider vBrightnessSlider; // VERTICAL SLIDER
 Picker picker;
 Settings settings;
-//  IDEA turn it into OR made a dark mode
-//  IDEA try some color as bg or the user could set the color in the settings, but just a BIT color like a black with a tint of blue or red
-//  REDESIGN shift the left bar to left and have everything there, now
-//  FIXME the app stops responding, give the option to select the com port
+//  IDEA darkmode option
+//  IDEA customisable background color
+// 	IDEA huesync mode > the hue of the color and sound of the music sync
 
-//  TODO CREATE A NEW CLASS FOR VERTICAL SLIDERS
+//  FIXME Catch errors on launch //the app stops responding, give the option to select the com port
+//  TODO fix settings
 
-//	WIP REDESIGN THE APP
-//	WIP settings tab
 //  TODO make the config a cfg or json
 //  TODO add more settings!!
 //  TODO better background
@@ -21,9 +19,12 @@ Settings settings;
 //  TODO add profiles tab
 //  TODO ADD PROFILES
 
-// 	IDEA do I need the hue sync mode ?? it's kind of ugly
-
-
+//  WIP .. Redesigning GUI 
+//  TODO move sound threshold to settings
+//  DOING move wheel on the left and adjust the Brightness slider
+//  TODO change bg color
+//  TODO redesign checkboxes
+//  
 void setup() {
   size(700, 400);
   surface.setResizable(true);
@@ -84,7 +85,7 @@ void setup() {
   cbSecLights.callbackFunction = "secLightsCallback";
 
   //picker
-  picker = new Picker(550, 210, 200);
+  picker = new Picker(200, 210, 200);
   picker.currentColor = defaultColor;
 }
 

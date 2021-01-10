@@ -1,3 +1,5 @@
+/*
+
 class Picker {
 	float x;
 	float y;
@@ -97,4 +99,4 @@ void colorWheel(int r){
 		println(h);
 		h = 0;
 	}
-}
+}*/
