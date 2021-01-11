@@ -20,15 +20,15 @@ class Settings { //TODO ADD MORE OPTIONS
 		if (mouseOver) {
 			noStroke();
 			fill(color(0, 35));
-			rect(width - 30, 0, 30, 30);
+			rect(width - 35, 5, 30, 30);
 		}
 		
 		stroke(0);
 		strokeWeight(3);
 		
-		line(width - 25, 8, width - 5, 8);
-		line(width - 25, 14, width - 5, 14);
-		line(width - 25, 20, width - 5, 20);
+		line(width - 30, 13, width - 10, 13);
+		line(width - 30, 19, width - 10, 19);
+		line(width - 30, 25, width - 10, 25);
 	}
 	
 	void update() {
@@ -41,6 +41,7 @@ class Settings { //TODO ADD MORE OPTIONS
 			mouseOver = false;
 		}
 	}
+
 	void show() {
 		textAlign(LEFT, BOTTOM);
 		textSize(20);

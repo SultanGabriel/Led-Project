@@ -1,1 +1,19 @@
 Big redesign update..
+
+3.1.0
+    -> Adjusted window size
+            -> Removed sidepanel..
+    -> moved Random Threshold slider
+    -> light settings redesign
+            -> Added Names 
+            -> Moved icon away from the corner and fixed the lines of the logo
+    -> Removed Icon from background
+
+PLANNED:
+
+3.1.1
+    -> Color Wheel update
+
+...
+-> Checkbox Redesign 
+-> Slider Redesign
