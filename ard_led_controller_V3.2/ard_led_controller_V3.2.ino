@@ -1,8 +1,8 @@
-#define RED_PIN 3
-#define GREEN_PIN 6
+#define RED_PIN 6
+#define GREEN_PIN 3
 #define BLUE_PIN 11
 #define LIGHTS_PIN 5
-
+/// SWITCHED RED AND GREEN PINS AROUND!!!
 int r, g, b;
 float lights = false;
 
