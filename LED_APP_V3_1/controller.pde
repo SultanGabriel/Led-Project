@@ -24,6 +24,9 @@ void sendToArdSecColor(boolean secLights) {
 }
 
 void sendToArd(color c) {
+	if(debug){
+		println("SENDING TO ARD: " + hex(c));
+	}
 	if (outputEnable) {
 		int r = (c >> 16) & 0xFF;
 		int g = (c >> 8) & 0xFF;
@@ -55,12 +58,7 @@ void setIcon() {
 }
 
 void mousePressed() {
-	// for (Slider s : sliders)
-	// {
-	// 	if (s.isOver())
-	// 		s.lock = true;
-	// }
-	
+
 	if (fadeSpeedSlider.isOver()) {
 		fadeSpeedSlider.lock = true;
 	}
@@ -79,7 +77,7 @@ void mousePressed() {
 	
 	float d = dist(picker.x, picker.y, mouseX, mouseY);
 	
-	if (91 <  d && d < 119) {         // 90 - 110
+	if (100 <  d && d < 150) {         // 90 - 110
 		picker.select(mouseX, mouseY);
 	}
 	
@@ -92,13 +90,31 @@ void mousePressed() {
 		println("MX " + mouseX + " MY " + mouseY);
 	}
 }
+void mouseDragged() {
 
-void mouseReleased() {
-	// for (Slider s : sliders)
-	// {
-	// 	s.lock = false;
-	// }
+	if (fadeSpeedSlider.isOver()) {
+		fadeSpeedSlider.lock = true;
+	}
 	
+	if (brightnessSlider.isOver()) {
+		brightnessSlider.lock = true;
+	}
+	
+	if (thresholdSlider.isOver()) {
+		thresholdSlider.lock = true;
+	}
+	
+	if (vBrightnessSlider.isOver()) {
+		vBrightnessSlider.lock = true;
+	}
+	
+	float d = dist(picker.x, picker.y, mouseX, mouseY);
+	// TODO Generate d automatically
+	if (110 <  d && d < 150) {         // 90 - 110
+		picker.select(mouseX, mouseY);
+	}
+}
+void mouseReleased() {
 	thresholdSlider.unlock();
 	fadeSpeedSlider.unlock();
 	brightnessSlider.unlock();

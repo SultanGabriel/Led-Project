@@ -28,7 +28,7 @@ color musicRnd() {
 		lowTot+= ( soundIn * soundMultiplier );
 		count++;
 	}
-  HSB();
+	HSB();
 	if(lowTot > rColorSwitchThr) {
 		clr = color(round(random(360)), 100, 100);
 	}
